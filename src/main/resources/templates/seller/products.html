@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-	th:replace="~{seller/adminbase::layout(~{::body})}">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 
 <meta charset="UTF-8">
@@ -42,8 +41,8 @@
 		</div>
 		<th th:text="${@commonServiceImpl.removeSessionMessage()}"></th>
 	</th:block>
-	
-	
+
+
 	<!-- Form admin -->
 	<form action="">
 		<div class="input-group rounded container p-2 ">
@@ -60,7 +59,8 @@
 	<div class="container-fluid">
 
 		<div class="card">
-			<table class="table align-middle mb-0 bg-white table-hover">
+			<table id="myTable"
+				class="table align-middle mb-0 bg-white table-hover">
 				<thead class="bg-light">
 					<tr class="border">
 						<th class="bg-primary bg-gradient text-white">Sl No</th>
@@ -74,8 +74,8 @@
 							Price</th>
 						<th class="bg-primary bg-gradient text-white">Stock</th>
 
-						<th colspan="2"
-							class="bg-primary bg-gradient text-white text-center">Action</th>
+						<th class="bg-primary bg-gradient text-white text-center">Action</th>
+						<th class="bg-primary bg-gradient text-white text-center">Action</th>
 					</tr>
 				</thead>
 				<tbody>

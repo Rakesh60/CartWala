@@ -81,7 +81,7 @@ public class AdminController {
 	    UserData currentUser = userService.getUserByEmail(userEmail);  // Assuming you have th
 		
 	    // Fetch only the categories entered by this user
-	    List<Category> userCategories = categoryService.getCategoriesByUser(currentUser);
+	    List<Category> userCategories = categoryService.getAllActiveCategory();
 		
 		//m.addAttribute("categories", categoryService.getAllCategory());
 		m.addAttribute("categories", userCategories);
@@ -95,11 +95,11 @@ public class AdminController {
 		
 
 	    // Retrieve the logged-in user from the principal (or session if necessary)
-	    String userEmail = principal.getName();  // Assuming email is used as the username
-	    UserData currentUser = userService.getUserByEmail(userEmail);  // Fetch the current user from your UserService
+	    //String userEmail = principal.getName();  // Assuming email is used as the username
+	    //UserData currentUser = userService.getUserByEmail(userEmail);  // Fetch the current user from your UserService
 
 	    // Set the user who is saving the category
-	    category.setStoredBy(currentUser);
+	   // category.setStoredBy(currentUser);
 		
 		
 		
@@ -368,8 +368,11 @@ public class AdminController {
 
 	@GetMapping("/getusers")
 	public String getAllUsers(Model m) {
+		
+		List<String> roles = Arrays.asList("ROLE_USER", "ROLE_SELLER");
+		List<UserData> users = userService.getUsersByRoles(roles);
 
-		List<UserData> users = userService.getUsers("ROLE_USER");
+		//List<UserData> users = userService.getUsers("ROLE_USER");
 		m.addAttribute("users", users);
 
 		return "admin/users";

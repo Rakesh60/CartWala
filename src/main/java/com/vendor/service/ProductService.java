@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 
 import com.vendor.model.Product;
+import com.vendor.model.UserData;
 
 public interface ProductService {
 
@@ -26,6 +27,8 @@ public interface ProductService {
 	
 	
 	public Page<Product> getAllActiveProductPagination(Integer pageNo,Integer pageSize,String category);
+
+	public List<Product> getProductsByUser(UserData currentUser);
 	
 	
 

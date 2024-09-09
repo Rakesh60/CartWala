@@ -31,5 +31,9 @@ public interface UserService {
 	public UserData updateUser(UserData user);
 
 	public UserData updateUserProfile(UserData user);
+	
+	public List<UserData> getUsersByRoles(List<String> roles);
+	
+
 
 }

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{admin/adminbase::layout(~{::body})}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet"
+	href="//cdn.datatables.net/2.1.4/css/dataTables.dataTables.min.css" />
+<!-- Font Awesome -->
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+	rel="stylesheet" />
+<!-- Google Fonts -->
+<link
+	href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+	rel="stylesheet" />
+<!-- MDB -->
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.2/mdb.min.css"
+	rel="stylesheet" />
+</head>
+<body>
+
+	<th:block th:if="${session.successMsg} ">
+		<div
+			class="alert alert-success alert-dismissible fade show z-3 position-absolute mt-2 ms-2 "
+			role="alert">
+			<strong>[[${session.successMsg}]]</strong>
+			<button type="button" class="btn-close" data-bs-dismiss="alert"
+				aria-label="Close"></button>
+		</div>
+		<th th:text="${@commonServiceImpl.removeSessionMessage()}"></th>
+	</th:block>
+	<th:block th:if="${session.errorMsg}">
+		<div
+			class="alert alert-warning alert-dismissible fade show z-3 position-absolute m-2"
+			role="alert">
+			<strong>[[${session.errorMsg}]]</strong>
+			<button type="button" class="btn-close" data-bs-dismiss="alert"
+				aria-label="Close"></button>
+		</div>
+		<th th:text="${@commonServiceImpl.removeSessionMessage()}"></th>
+	</th:block>
+	<div class="m-4">
+	<h3 class="bg-primary text-white text-center p-2   ">All Orders</h3>
+		<!-- <table id="myTable" class="display"> -->
+		<table class="table align-middle mb-0 bg-white display" id="myTable">
+			<thead class="bg-light">
+				<tr>
+
+					<th>order ID</th>
+					<th>Date</th>
+					<th>Product Details</th>
+					<th>Price</th>
+					<th>Status</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="ord:${orders}">
+					<td><details>
+							<summary>[[${ord.orderId}]]</summary>
+							<ul>
+								<li><span class="text-danger">Name</span>
+									[[${ord.orderAddress.firstName+" "+ord.orderAddress.lastName}]]</li>
+								<li><span class="text-danger">Email</span>
+									[[${ord.orderAddress.email}]]</li>
+								<li><span class="text-danger">Mobile</span>
+									[[${ord.orderAddress.mobileNo}]]</li>
+								<li><span class="text-danger">Address</span>
+									[[${ord.orderAddress.address}]]</li>
+								<li><span class="text-danger">State</span>
+									[[${ord.orderAddress.state}]]</li>
+								<li><span class="text-danger">City</span>
+									[[${ord.orderAddress.city}]]</li>
+								<li><span class="text-danger">Pincode</span>
+									[[${ord.orderAddress.pincode}]]</li>
+								
+							</ul>
+						</details></td>
+					<td>[[${ord.orderDate}]]</td>
+					<td>[[${ord.product.title}]]</td>
+					<td>Quantity : [[${ord.quantity}]] <br> <span class="text-success">Price :
+						[[${ord.price}]]</span> <br>Total Price : <span class="bg-warning  rounded p-1 bg-opacity-25">[[${ord.quantity *
+						ord.price}]] Rs</span>
+					</td>
+					<td>[[${ord.status}]]</td>
+					<td>
+
+
+						<form action="/admin/update-order-status" method="post">
+							<div class="row">
+								<div class="col">
+									<select class="form-control" name="st">
+										<option value="">--select--</option>
+										<option th:each="status : ${orderStatuses}"
+											th:value="${status.getId()}" th:text="${status.name}"></option>
+									</select>
+
+
+								</div>
+								<input th:value="${ord.id}" name="id" type="hidden">
+								<div class="col">
+									<th:block
+										th:if="${ord.status=='Cancelled' || ord.status=='Delivered'}">
+										<button class="btn btn-primary btn-sm col disabled">Update</button>
+									</th:block>
+									<th:block
+										th:unless="${ord.status=='Cancelled' || ord.status=='Delivered'}">
+										<button class="btn btn-sm btn-primary ">Update</button>
+									</th:block>
+
+
+								</div>
+							</div>
+						</form>
+					</td>
+
+
+				</tr>
+
+			</tbody>
+
+		</table>
+	</div>
+
+	<script defer src="https://cdn.datatables.net/2.1.4/js/dataTables.js"></script>
+	<script src="https://code.jquery.com/jquery-3.7.1.js"
+		integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+		crossorigin="anonymous"></script>
+	<script type="text/javascript">
+$(document).ready( function () {
+    $('#myTable').DataTable();
+} );
+</script>
+
+
+</body>
+</html>

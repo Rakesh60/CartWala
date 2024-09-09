@@ -13,4 +13,6 @@ public interface UserRepository extends JpaRepository<UserData, Integer>{
 	public List<UserData> findByRole(String role);
 	
 	public UserData  findByResetToken(String resetToken);
+	
+	public  List<UserData> findByRoleIn(List<String> roles);
 }

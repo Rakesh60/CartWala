@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{seller/adminbase::layout(~{::body})}">
+<head>
+<meta charset="UTF-8" />
+<title>Add Category</title>
+<!-- Font Awesome -->
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+	rel="stylesheet" />
+<!-- Google Fonts -->
+<link
+	href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+	rel="stylesheet" />
+<!-- MDB -->
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.2/mdb.min.css"
+	rel="stylesheet" />
+</head>
+<body>
+	<div class="container">
+		<div class="d-flex m-4 ">
+			<div>
+
+				<form class="border bg-primary bg-opacity-10 px-2 pt-2"
+					style="width: 22rem" action="/seller/updateCategory" method="post"
+					enctype="multipart/form-data">
+					<h3 class="bg-warning text-white p-2 text-center rounded-2">
+						Edit Category</h3>
+					<!-- id input -->
+					<input type="hidden" name="id" th:value="${category.id}">
+					<!-- Name input -->
+					<div data-mdb-input-init class="form-outline mb-4">
+						<input name="name" th:value="${category.name}" type="text"
+							id="form5Example1" class="form-control" /> <label
+							class="form-label" for="form5Example1">Name</label>
+					</div>
+
+					<!-- fILE uPLOAD -->
+					<div data-mdb-input-init class="mb-4">
+						<label class="form-label" for="customFile">Image file
+							input </label> <input name="file" type="file" class="form-control"
+							id="customFile" />
+					</div>
+					<div class="d-flex float-left">
+						<img
+							th:src="@{'/uploads/img/category_img/'+${category.imagename}}"
+							style="width: 80px; height: 80px" class="rounded " /> <span>Preview
+							or else </span> <b class="text-danger">&nbsp Upload new Image</b>
+
+
+					</div>
+					<!-- Default radio -->
+					<label class="form-label"> Status of Category</label>
+					<div class="form-check">
+						<input class="form-check-input" type="radio" name="isActive"
+							th:checked="${category.isActive==true}" value="true"
+							id="flexRadioDefault1" /> <label class="form-check-label"
+							for="flexRadioDefault1"> Default radio </label>
+					</div>
+
+					<!-- Default checked radio -->
+					<div class="form-check">
+						<input class="form-check-input" type="radio" name="isActive"
+							th:checked="${category.isActive==false}" value="false"
+							id="flexRadioDefault2" /> <label class="form-check-label"
+							for="flexRadioDefault2"> Default checked radio </label>
+					</div>
+
+					<!-- Submit button -->
+					<button data-mdb-ripple-init type="submit"
+						class="btn btn-primary btn-block mb-4">Update</button>
+
+					<a data-mdb-ripple-init class="btn btn-outline btn-block mb-4"
+						href="/seller/category">Back to see Category</a>
+				</form>
+			</div>
+			<div>
+				<th:block th:if="${session.successMsg}">
+					<div class="mx-4 alert alert-success alert-dismissible fade show"
+						role="alert">
+						<strong>[[${session.successMsg}]]</strong>
+						<button type="button" class="btn-close" data-bs-dismiss="alert"
+							aria-label="Close"></button>
+					</div>
+					<th th:text="${@commonServiceImpl.removeSessionMessage()}"></th>
+				</th:block>
+				<th:block th:if="${session.errorMsg}">
+					<div class="alert alert-warning alert-dismissible fade show"
+						role="alert">
+						<strong>[[${session.errorMsg}]]</strong>
+						<button type="button" class="btn-close" data-bs-dismiss="alert"
+							aria-label="Close"></button>
+					</div>
+					<th th:text="${@commonServiceImpl.removeSessionMessage()}"></th>
+				</th:block>
+			</div>
+		</div>
+	</div>
+
+	<!-- Bootstrap JavaScript Libraries -->
+	<script
+		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+		integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+		crossorigin="anonymous"></script>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+		integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+		crossorigin="anonymous"></script>
+	<!-- MDB -->
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.2/mdb.umd.min.js"></script>
+</body>
+</html>

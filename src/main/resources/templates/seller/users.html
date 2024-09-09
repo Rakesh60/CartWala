@@ -75,7 +75,7 @@
 					th:classappend="${usr.isEnabled} ? 'badge-success' : 'badge-danger'"
 					class="badge rounded-pill d-inline"> [[${usr.isEnabled} ?
 						'Active' : 'Not-Active']] </span></td>
-				<td>[[${usr.role=='ROLE_USER'?'User':'Seller'}]]</td>
+				<td>[[${usr.role=='ROLE_USER'?'User':'admin'}]]</td>
 				<td>
 					<a th:href="@{'/admin/updatestatus?status=true&id='+${usr.id}}"
 							class="btn bg-success bg-opacity-10	 btn-sm "

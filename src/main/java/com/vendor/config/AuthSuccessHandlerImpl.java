@@ -15,22 +15,23 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Service
-public class AuthSuccessHandlerImpl implements AuthenticationSuccessHandler{
+public class AuthSuccessHandlerImpl implements AuthenticationSuccessHandler {
 
-	@Override
-	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-			Authentication authentication) throws IOException, ServletException {
+    @Override
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+                                        Authentication authentication) throws IOException, ServletException {
 
-		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-		Set<String> roles = AuthorityUtils.authorityListToSet(authorities);
-		
-		if (roles.contains("ROLE_ADMIN")) {
-			response.sendRedirect("/admin/");
-		}
-		else {
-			response.sendRedirect("/");
-
-		}
-	}
-
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        Set<String> roles = AuthorityUtils.authorityListToSet(authorities);
+        
+        if (roles.contains("ROLE_ADMIN")) {
+            response.sendRedirect("/admin/");
+        }
+        else if (roles.contains("ROLE_SELLER")) {
+            response.sendRedirect("/seller/");
+        }
+        else {
+            response.sendRedirect("/");
+        }
+    }
 }

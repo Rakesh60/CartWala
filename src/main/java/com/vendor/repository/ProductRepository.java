@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.vendor.model.Product;
+import com.vendor.model.UserData;
 
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
@@ -24,6 +25,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
 
 	Page<Product> findByCategory(Pageable pagable,String category);
+
+	List<Product> findByStoredBy(UserData currentUser);
 
 	
 

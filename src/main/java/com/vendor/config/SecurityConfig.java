@@ -47,7 +47,10 @@ public class SecurityConfig {
 				.cors(cors -> cors.disable())
 				.authorizeHttpRequests(req -> req
 						.requestMatchers("/admin/**").hasRole("ADMIN") // Only ADMIN can access /admin/** URLs
+		                .requestMatchers("/seller/**").hasRole("SELLER") // Only SELLER can access /seller/** URLs
+
 						.requestMatchers("/user/**").hasRole("USER") // Only USER can access /user/** URLs
+
 						.requestMatchers("/", "/products", "/product/**").hasAnyRole("USER", "ANONYMOUS") // Restrict
 																											// ADMIN
 																											// from

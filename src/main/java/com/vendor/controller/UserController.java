@@ -260,6 +260,7 @@ public class UserController {
 	    oldUser.setAddress(user.getAddress());
 	    oldUser.setCity(user.getCity());
 	    oldUser.setState(user.getState());
+	    oldUser.setPincode(user.getPincode());
 	    oldUser.setImagename(imageName);
 	    oldUser.setIsEnabled(true);
 

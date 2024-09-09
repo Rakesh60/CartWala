@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import com.vendor.model.Product;
+import com.vendor.model.UserData;
 import com.vendor.repository.ProductRepository;
 import com.vendor.service.ProductService;
 
@@ -92,6 +93,11 @@ public class ProductServiceImpl implements ProductService {
 	public Page<Product> searchProductWithPagination(String st, int pageNo, int pageSize) {
 	    Pageable pageable = PageRequest.of(pageNo, pageSize);
 	    return productRepository.findByTitleContainingIgnoreCaseOrCategoryContainingIgnoreCase(st, st, pageable);
+	}
+
+	@Override
+	public List<Product> getProductsByUser(UserData currentUser) {
+		 return productRepository.findByStoredBy(currentUser);
 	}
 
 

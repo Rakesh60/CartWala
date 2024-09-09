@@ -341,11 +341,13 @@ public class SellerController {
             // Update the fields of the old product with the new data
             oldProduct.setTitle(product.getTitle());
             oldProduct.setDescription(product.getDescription());
-            oldProduct.setCategory(product.getCategory());
+           
             oldProduct.setPrice(product.getPrice());
             oldProduct.setDiscount(product.getDiscount());
             oldProduct.setStock(product.getStock());
             oldProduct.setIsActive(product.getIsActive());
+            oldProduct.setCategory(product.getCategory());
+            
 
             // Update the image name if a new file was uploaded
             if (!file.isEmpty()) {

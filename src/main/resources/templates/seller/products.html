@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-	th:replace="~{admin/adminbase::layout(~{::body})}">
+	th:replace="~{seller/adminbase::layout(~{::body})}">
 <head>
 
 <meta charset="UTF-8">
@@ -99,10 +99,10 @@
 						<td>[[${prd.discount}]] %</td>
 						<td>[[${prd.discountedPrice}]] ₹</td>
 						<td><span class="badge badge-warning rounded-pill d-inline">[[${prd.stock}]]</span>
-						<td><a th:href="@{'/admin/loadeditproduct/'+${prd.id}}"
+						<td><a th:href="@{'/seller/loadeditproduct/'+${prd.id}}"
 							class="btn btn-link btn-rounded btn-sm fw-bold"
 							data-mdb-ripple-color="dark"> Edit </a></td>
-						<td><a th:href="@{'/admin/deleteproduct/'+${prd.id}}"
+						<td><a th:href="@{'/seller/deleteproduct/'+${prd.id}}"
 							class="btn btn-link btn-rounded btn-sm fw-bold"
 							data-mdb-ripple-color="dark"> Delete </a></td>
 

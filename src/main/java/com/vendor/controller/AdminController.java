@@ -2,6 +2,7 @@ package com.vendor.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -165,7 +166,7 @@ public class AdminController {
 	public String loadEditCategory(@PathVariable int id, Model m) {
 
 		m.addAttribute("category", categoryService.getCategoryById(id));
-
+		
 		return "admin/edit-category";
 	}
 
@@ -224,7 +225,7 @@ public class AdminController {
 	public String addProducts(Model m) {
 		List<Category> categories = categoryService.getAllCategory();
 		m.addAttribute("categories", categories);
-
+	
 		return "admin/add-products";
 	}
 
@@ -300,6 +301,20 @@ public class AdminController {
 	@GetMapping("/loadeditproduct/{id}")
 	public String loadEditproduct(@PathVariable int id, Model m) {
 		m.addAttribute("product", productService.getProductById(id));
+	
+
+		Product product = productService.getProductById(id);
+
+		// Use reflection to get all the fields of the Product class
+		for (Field field : product.getClass().getDeclaredFields()) {
+		    field.setAccessible(true);  // Ensure private fields can be accessed
+		    try {
+		        // Print the field name and its value
+		        System.out.println(field.getName() + " = " + field.get(product));
+		    } catch (IllegalAccessException e) {
+		        e.printStackTrace();
+		    }
+		}
 		m.addAttribute("category", categoryService.getAllCategory());
 		return "admin/edit-product";
 	}
@@ -324,6 +339,7 @@ public class AdminController {
 			oldProduct.setPrice(product.getPrice());
 			oldProduct.setStock(product.getStock());
 			oldProduct.setIsActive(product.getIsActive());
+			oldProduct.setCategory(product.getCategory());
 			oldProduct.setImageName(imageName);
 
 			// Set the discount value on the oldProduct

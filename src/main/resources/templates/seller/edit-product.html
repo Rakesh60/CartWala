@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-	th:replace="~{admin/adminbase::layout(~{::body})}">
+	th:replace="~{seller/adminbase::layout(~{::body})}">
 <head>
 <!-- Required Meta Tags -->
 <meta charset="utf-8">
@@ -9,7 +9,7 @@
 <!-- Document Title, Description, and Author -->
 <title>Add Products</title>
 <meta name="description"
-	content="Console is a Free Bootstrap Admin Template.">
+	content="Console is a Free Bootstrap seller Template.">
 <meta name="author" content="BootstrapBrain">
 
 <link
@@ -128,22 +128,38 @@
 													readonly="readonly">
 											</div>
 											<!-- Default radio -->
-											<label class="form-label"> Status of Product</label>
-											<div class="form-check">
-												<input class="form-check-input" type="radio" name="isActive"
-													th:checked="${product.isActive==true}" value="true"
-													id="flexRadioDefault1" /> <label class="form-check-label"
-													for="flexRadioDefault1"> Active</label>
-											</div>
+											<div class="row">
+												<label class="form-label"> Status of Product</label>
+												<div class="form-check col-3">
+													<input class="form-check-input" type="radio"
+														name="isActive" th:checked="${product.isActive==true}"
+														value="true" id="flexRadioDefault1" /> <label
+														class="form-check-label" for="flexRadioDefault1">
+														Active</label>
+												</div>
 
-											<!-- Default checked radio -->
-											<div class="form-check">
-												<input class="form-check-input" type="radio" name="isActive"
-													th:checked="${product.isActive==false}" value="false"
-													id="flexRadioDefault2" /> <label class="form-check-label"
-													for="flexRadioDefault2"> Not-Active</label>
-											</div>
+												<!-- Default checked radio -->
+												<div class="form-check col-3">
+													<input class="form-check-input" type="radio"
+														name="isActive" th:checked="${product.isActive==false}"
+														value="false" id="flexRadioDefault2" /> <label
+														class="form-check-label" for="flexRadioDefault2">
+														Not-Active</label>
+												</div>
 
+
+
+												<div class="col-5">
+													<label for="inputCategory" class="form-label">Category</label>
+													<select id="inputCategory" class="form-select"
+														name="category">
+														<option selected disabled>[[${product.title}]]</option>
+														<option th:each="c : ${category}" th:value="${c.name}"
+															th:text="${c.name}"
+															th:selected="${product.category} == ${c.name}"></option>
+													</select>
+												</div>
+											</div>
 											<div class="col-md-12">
 												<div class="form-label">
 													<label for="exampleFormControlFile1">Product Image
@@ -155,14 +171,11 @@
 											<div class="d-grid gap-2">
 												<button class="btn btn-primary" type="submit">Update
 													product</button>
-												<a href="/admin/viewproducts" type="button"
+												<a href="/seller/viewproducts" type="button"
 													class="btn btn-outline-primary" data-mdb-ripple-init
 													data-mdb-ripple-color="dark"> View products</a>
 
 											</div>
-
-
-
 										</form>
 									</div>
 								</div>

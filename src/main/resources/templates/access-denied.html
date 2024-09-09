@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Access Denied</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+   <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="card shadow-lg border-danger">
+            <div class="row no-gutters">
+              <!-- Image Column -->
+              <div class="col-md-6">
+                <img
+                  class="img-fluid rounded-left"
+                  alt="Access Denied"
+                  src="/img/images/denied.png"
+                />
+              </div>
+              
+              <!-- Text Column -->
+              <div class="col-md-6 d-flex flex-column justify-content-center p-4">
+                <h1 class="text-danger text-center">Access Denied</h1>
+                <p class="lead text-center mt-3" th:text="${errorMessage}"></p>
+                <div class="text-center mt-4">
+                  <a href="/" class="btn btn-primary btn-lg">Go to Home</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa51LIh3cI1o76P+p6X2L9AKj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIyjc9q7TxlHAebJ8U7Z9wI0KRd4ZfJUX0iyN6y/"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

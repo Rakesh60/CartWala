@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{admin/adminbase::layout(~{::body})}">
+<head>
+<!-- Required Meta Tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Document Title, Description, and Author -->
+<title>Add Products</title>
+<meta name="description"
+	content="Console is a Free Bootstrap Admin Template.">
+<meta name="author" content="BootstrapBrain">
+
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+	crossorigin="anonymous">
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+	integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<!-- Google Fonts Files -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+	rel="stylesheet">
+
+<!-- CSS Files -->
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/jsvectormap/dist/css/jsvectormap.min.css">
+<link rel="stylesheet" href="/assets/css/console-bsb.css">
+
+<!-- BSB Head -->
+</head>
+<body>
+
+	<!-- Main -->
+	<main id="main">
+
+		<div>
+			<th:block th:if="${session.successMsg}">
+				<div
+					class="alert alert-success alert-dismissible fade show z-3 position-absolute "
+					role="alert">
+					<strong>[[${session.successMsg}]]</strong>
+					<button type="button" class="btn-close" data-bs-dismiss="alert"
+						aria-label="Close"></button>
+				</div>
+				<th th:text="${@commonServiceImpl.removeSessionMessage()}"></th>
+			</th:block>
+			<th:block th:if="${session.errorMsg}">
+				<div
+					class="alert alert-warning alert-dismissible fade show z-3 position-absolute"
+					role="alert">
+					<strong>[[${session.errorMsg}]]</strong>
+					<button type="button" class="btn-close" data-bs-dismiss="alert"
+						aria-label="Close"></button>
+				</div>
+				<th th:text="${@commonServiceImpl.removeSessionMessage()}"></th>
+			</th:block>
+		</div>
+
+		<!-- Section - Bootstrap Brain Component -->
+		<section class="pb-3 pb-md-4 pb-xl-5 bg-light pt-4 ">
+			<div class="container ">
+				<div class="row gy-3 gy-md-4">
+					<div class="col-12 col-lg-6">
+						<div class="row gy-3 gy-md-4">
+							<div class="col-12">
+								<div class="card widget-card border-light shadow-sm">
+									<div class="card-header bg-transparent p-4 border-light-subtle">
+										<h5 class="card-title widget-card-title m-0">Add Product</h5>
+									</div>
+									<div class="card-body p-4 bg-primary bg-opacity-10 ">
+										<form class="row g-3 p-2" enctype="multipart/form-data"
+											method="post" th:action="@{/admin/saveProduct}">
+
+											<div class="col-md-12">
+												<label for="inputTitle" class="form-label">Title</label> <input
+													type="text" class="form-control" id="inputTitle"
+													name="title">
+											</div>
+											<div class="col-12">
+												<label for="descriptionLabel">Description</label>
+												<textarea class="form-control" id="descriptionLabel"
+													rows="3" name="description"></textarea>
+											</div>
+
+
+											<div class="col-md-4">
+												<label for="inputprice" class="form-label">Price</label> <input
+													type="text" class="form-control" id="inputprice"
+													name="price">
+											</div>
+											<div class="col-md-5">
+												<label for="inputCategory" class="form-label">Category</label>
+												<select id="inputCategory" class="form-select"
+													name="category">
+													<option selected disabled>Choose...</option>
+													<option th:each="c:${categories}">[[${c.name}]]</option>
+												</select>
+											</div>
+											<div class="col-md-3">
+												<label for="inputStock" class="form-label">Stock</label> <input
+													type="text" class="form-control" id="inputStock"
+													name="stock">
+											</div>
+											<!-- Default radio -->
+											<label class="form-label"> Status of Product</label>
+											<div class="form-check">
+												<input class="form-check-input mx-2 bg-success" type="radio" name="isActive"
+													value="true" id="flexRadioDefault1" checked /> <label
+													class="form-check-label" for="flexRadioDefault1">Active
+													</label>
+											</div>
+
+											<!-- Default checked radio -->
+											<div class="form-check">
+												<input class="form-check-input mx-2 bg-danger" type="radio" name="isActive"
+													value="false" id="flexRadioDefault2" /> <label
+													class="form-check-label" for="flexRadioDefault2">Not-Active
+												</label>
+											</div>
+
+											<div class="col-md-12">
+												<div class="form-label">
+													<label for="exampleFormControlFile1">Product Image
+													</label> <input type="file" class="form-control" name="file"
+														id="exampleFormControlFile1">
+												</div>
+											</div>
+
+											<div class="d-grid gap-2">
+												<button class="btn btn-primary" type="submit">Submit</button>
+												<a href="viewproducts" type="button"
+													class="btn btn-outline-primary" data-mdb-ripple-init
+													data-mdb-ripple-color="dark"> View products</a>
+
+											</div>
+
+
+
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</section>
+
+	</main>
+
+
+
+
+
+	<!-- Javascript Files: Vendors -->
+	<script
+		src="https://unpkg.com/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Javascript Files: Controllers -->
+	<script src="/assets/controller/console-bsb.js"></script>
+
+	<!-- BSB Body End -->
+</body>
+</html>

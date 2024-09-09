@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{base::layout(~{::body})}">
+<head>
+<meta charset="UTF-8">
+<title>Product Details</title>
+<!-- Add Bootstrap CSS link -->
+<link
+	href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css"
+	rel="stylesheet">
+<!-- Add Font Awesome CSS for icons -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+.card-sh {
+	border-radius: 15px;
+}
+
+.vstack>* {
+	margin-bottom: 10px; /* Adjust spacing between stacked elements */
+}
+</style>
+</head>
+<body>
+<th:block th:if="${session.successMsg}">
+		<div
+			class="alert alert-success alert-dismissible fade show z-3 position-absolute m-2"
+			role="alert">
+			<strong>[[${session.successMsg}]] ✔</strong>
+			<button type="button" class="btn-close" data-bs-dismiss="alert"
+				aria-label="Close"></button>
+		</div>
+		<th th:text="${@commonServiceImpl.removeSessionMessage()}"></th>
+	</th:block>
+
+
+
+
+
+	<th:block th:if="${session.errorMsg}">
+		<div
+			class="alert alert-warning alert-dismissible fade show z-3 position-absolute m-2"
+			role="alert">
+			<strong>[[${session.errorMsg}]]</strong>
+			<button type="button" class="btn-close" data-bs-dismiss="alert"
+				aria-label="Close"></button>
+		</div>
+		<th th:text="${@commonServiceImpl.removeSessionMessage()}"></th>
+	</th:block>
+	<section>
+		<div class="container shadow"
+			style="margin-top: 70px; margin-bottom: 100px">
+			<div class="row g-4 p-5">
+				<div class="col-12 col-md-6 text-center text-md-end">
+					<img alt="Fresh Apple"
+						th:src="@{'/uploads/img/product_img/'+${product.imageName}}"
+						class="img-fluid " style="max-width: 100%; height: auto;">
+				</div>
+
+				<div class="col-12 col-md-6">
+					<p class="fs-3">[[${product.title}]]</p>
+					<p>
+						<span class="fw-bold">Description : </span><br>[[${product.description}]]
+					</p>
+					<p>
+						<span class="fw-bold">Product Details: </span> <br>Status : <span
+							th:if="${product.stock > 0}" class="badge bg-success">Available</span>
+						<span th:if="${product.stock <= 0}" class="badge bg-warning">Out
+							of stock</span> <br> Category: [[${product.category}]]<br>
+						Delivery time: Same day delivery
+					</p>
+					<p class="fs-5 fw-bold">
+						Price : &nbsp; &nbsp; &nbsp; &nbsp;<i class="fas fa-rupee-sign"></i>
+						[[${product.discountedPrice}]]<span
+							class="fs-6 text-decoration-line-through text-secondary">[[${product.price}]]</span>
+						<span class="fs-6 text-success">[[${product.discount}]]%
+							off</span>
+					</p>
+
+					<div class="row text-center text-md-start mb-3">
+						<div class="col-4 col-md-4 text-success p-2">
+							<i class="fas fa-phone fa-2x"></i>
+							<p>Call now</p>
+						</div>
+						<div class="col-4 col-md-4 text-danger p-2">
+							<i class="fas fa-comment-sms fa-2x"></i>
+							<p>Message me</p>
+						</div>
+						<div class="col-4 col-md-4 text-primary p-2">
+							<i class="fas fa-person-walking fa-2x"></i>
+							<p>Pick Up</p>
+						</div>
+					</div>
+
+					<div class="vstack gap-2">
+						<!-- If the product is in stock and the user is not logged in, show the "Add To Cart" link to the signin page -->
+						<th:block th:if="${product.stock > 0}">
+							<a th:if="${user == null}" href="/signin"
+								class="btn btn-success text-white">
+								<h5 class="mb-0">Add To Cart</h5>
+							</a>
+							<!-- If the product is in stock and the user is logged in, show the "Add To Cart" link with product and user IDs -->
+							<a th:if="${user != null}"
+								th:href="@{'/user/addtocart?pid=' + ${product.id} + '&uid=' + ${user.id}}"
+								class="btn btn-success text-white">
+								<h5 class="mb-0">Add to Cart</h5>
+							</a>
+						</th:block>
+
+						<!-- If the product is out of stock, show the "Out of Stock" button -->
+						<a th:if="${product.stock <= 0}" href="#"
+							class="btn btn-warning text-white disabled">
+							<h5 class="mb-0">Out of Stock</h5>
+						</a>
+
+						<!-- Back to Products link -->
+						<a href="/products"
+							class="text-decoration-none btn btn-outline-success">Back To
+							Products</a>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Custom Script to Show Toast on Page Load -->
+	<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var toastEl = document.getElementById('pageLoadToast');
+        var toast = new bootstrap.Toast(toastEl);
+        toast.show();
+    });
+</script>
+
+	<!-- Add Bootstrap JS and dependencies -->
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

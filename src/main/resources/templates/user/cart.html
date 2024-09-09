@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{base::layout(~{::body})}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div th:if="${msg != null}" class="container card mt-4 p-4 shadow-lg">
+    <div class="row align-items-center">
+    <!-- Image -->
+        <div class="col-md-6 text-center">
+            <img class="img-fluid" height="400" alt="Cart Image" src="/img/images/cart.png">
+        </div>
+        <!-- Icon and Message -->
+        <div class="col-md-6 text-center">
+            <i class="fa-solid fa-cart-plus fs-1 text-warning mb-3"></i>
+            <h3 class="text-warning">[[${msg}]]</h3>
+        </div>
+
+        
+    </div>
+</div>
+
+
+	<div class="container card mt-4" th:if="${msg == null}">
+			<table class="table align-middle mb-0 bg-white table-hover">
+				<thead class="bg-light">
+					<tr class="border">
+						<th class="bg-success bg-gradient text-white">Sl No</th>
+						<th class="bg-success bg-gradient text-white">Product preview</th>
+						<th class="bg-success bg-gradient text-white">Product Name</th>
+						<th class="bg-success bg-gradient text-white">Price</th>
+						<th class="bg-success bg-gradient text-white">Quantity</th>
+						<th class="bg-success bg-gradient text-white">Total Price</th>
+					
+
+						<th colspan="2" class="bg-success bg-gradient text-white text-center">Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="item,i:${cartItems}">
+
+						<td>[[${i.count}]]</td>
+						<td>
+							<div class="d-flex align-items-center ">
+								<img th:src="@{'/uploads/img/product_img/'+${item.product.imageName}}"
+									style="width: 75px; height: 75px" class="rounded " />
+							</div>
+						</td>
+
+						<td>[[${item.product.title}]]</td>
+						<td>[[${item.product.discountedPrice}]]</td>
+
+					<td>
+					
+					<a th:href="@{'/user/cartQtyUpdate?sy=mi&cid='+${item.id}}"><span class="badge badge-warning rounded-pill d-inline "><i class="fa-solid fa-minus"></i></span></a>
+					
+					<span class="m-1 badge badge-primary px-2 fs-5 shadow">[[${item.quantity}]]</span>
+					
+					<a th:href="@{'/user/cartQtyUpdate?sy=pl&cid='+${item.id}}"><span class="badge badge-success rounded-pill d-inline"><i class="fa-solid fa-plus"></i></span></a>
+					</td>
+					<td>&#8377; [[${item.totalPrice}]]</td>
+						<td><a 
+							class="btn btn-link btn-rounded btn-sm fw-bold"
+							data-mdb-ripple-color="dark"> Edit </a></td>
+						<td><a 
+							class="btn btn-link btn-rounded btn-sm fw-bold"
+							data-mdb-ripple-color="dark"> Delete </a></td>
+						
+					</tr>
+					<tr>
+						
+						<td>
+							[[${totalItems}]]
+						</td>
+						<td></td>
+						<td>
+							<p class="fw-normal mb-1">--------</p>
+						</td>
+						<td>--------
+						</td>
+						<td><span class=" d-inline fs-5">Total Price</span>
+						</td>
+						<td class="fs-5">&#8377; [[${totalOrderdAmount}]] 
+						</td>
+						
+						<td colspan="2">
+							<a href="/user/order" class="btn  btn-block " style="background-color: #FFA500">Click to pay <strong>&#8377; [[${totalOrderdAmount}]] </strong> </a>
+						</td>
+					</tr>
+
+				</tbody>
+			</table>
+		</div>
+</body>
+</html>

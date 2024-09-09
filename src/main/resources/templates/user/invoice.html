@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice</title>
+    <style>
+        @media print {
+            body { margin: 0; }
+            .container { padding: 20px; }
+        }
+        .container { padding: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Invoice</h1>
+        <p><strong>Order Number:</strong> [[${orderNumber}]]</p>
+        <p><strong>Subtotal:</strong> &#8377; [[${subtotal}]]</p>
+        <p><strong>Delivery Charges:</strong> &#8377; [[${deliveryPrice}]]</p>
+        <p><strong>GST (10%):</strong> &#8377; [[${taxAmount}]]</p>
+        <p><strong>Total Amount:</strong> &#8377; [[${totalOrderAmount}]]</p>
+        <button onclick="window.print()">Print Invoice</button>
+    </div>
+    <script>
+        window.onload = function() {
+            window.print();
+        };
+    </script>
+</body>
+</html>

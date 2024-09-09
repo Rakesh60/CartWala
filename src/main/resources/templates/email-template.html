@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            border-radius: 10px 10px 0 0;
+        }
+        .content {
+            padding: 20px;
+        }
+        .content p {
+            line-height: 1.6;
+            color: #555;
+        }
+        .product-info {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .product-info p {
+            margin: 5px 0;
+            color: #333;
+        }
+        .product-info strong {
+            color: #4CAF50;
+        }
+        .footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+            color: #999;
+            margin-top: 20px;
+        }
+        .button {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h2>Order Status</h2>
+        </div>
+        <div class="content">
+            <p>Dear [[name]],</p>
+            <p>Thank you for your order. The current status of your order is: <strong>[[orderStatus]]</strong>.</p>
+            <div class="product-info">
+                <h3>Product Information:</h3>
+                <p><strong>Product Name:</strong> [[productName]]</p>
+                <p><strong>Category:</strong> [[category]]</p>
+                <p><strong>Quantity:</strong> [[quantity]]</p>
+                <p><strong>Price:</strong> ₹[[price]]</p>
+                <p><strong>Payment Method:</strong> [[paymentType]]</p>
+            </div>
+            <a href="" class="button">View Your Order</a>
+        </div>
+        <div class="footer">
+            <p>&copy; 2024 Your Company Name. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

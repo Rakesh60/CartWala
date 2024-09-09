@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:fragment="layout(content)">
+<head>
+<meta charset="ISO-8859-1" />
+<title>Cart Wala</title>
+
+<!-- Bootstrap CSS -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+	crossorigin="anonymous" />
+
+<!-- Font Awesome -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+	integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<!-- MDB UI Kit -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.2/mdb.min.css" />
+
+<!-- Custom CSS -->
+<link rel="stylesheet" th:href="@{/css/indexstyle.css}" />
+</head>
+
+<body>
+	<!-- Navbar -->
+	<nav
+		class="navbar navbar-expand-lg navbar-custom bg-success text-opacity sticky-top">
+		<div class="container-fluid">
+			<a class="navbar-brand text-white ms-5" href="#">Cart Wala</a>
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#navbarNav"
+				aria-controls="navbarNav" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav ms-auto">
+					<li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+					<li class="nav-item"><a class="nav-link" href="/">Categories</a></li>
+					<li class="nav-item"><a class="nav-link" href="/products">Products</a></li>
+					<li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+					<li class="nav-item"><a class="nav-link" href="#customers">Customers</a></li>
+					<li class="nav-item"><a class="nav-link" href="/user/cart">
+							<i class="fa-solid fa-shopping-cart"></i> Cart <span
+							class="badge rounded-pill bg-warning">[[${cartCount}]]</span>
+					</a></li>
+				</ul>
+				<th:block th:if="${user == null}">
+					<a href="/signin" class="btn text-light border rounded-pill">
+						Login <i class="fa-solid fa-user"></i>
+					</a>
+				</th:block>
+
+				<th:block th:unless="${user == null}">
+					<div class="dropdown">
+						<a class="btn text-light border rounded-pill dropdown-toggle"
+							href="#" role="button" id="userDropdown"
+							data-bs-toggle="dropdown" aria-expanded="false">
+							[[${user.name.split(' ')[0]}]] <i class="fa-solid fa-user"></i>
+						</a>
+						<ul class="dropdown-menu" aria-labelledby="userDropdown">
+							<li><a class="dropdown-item" href="/user/profile">Profile</a></li>
+							<li><a class="dropdown-item" href="/user/myorders">My Orders</a></li>
+							<li><a class="dropdown-item" href="/settings">Settings</a></li>
+							<li><hr class="dropdown-divider"></li>
+							<li><a class="dropdown-item" href="/logout">Logout</a></li>
+						</ul>
+					</div>
+				</th:block>
+
+
+			</div>
+		</div>
+	</nav>
+
+	<!-- Dynamic Content -->
+	<div th:replace="${content}"></div>
+
+	<!-- Footer -->
+	<section class="footer" id="footer">
+		<div class="footer-box">
+			<button href="#" class="button">
+				Shop Now <i class="fa-solid fa-cart-shopping"></i>
+			</button>
+			<p>Bengaluru, 4th Street 5th Floor, Karnataka 560022</p>
+			<div class="social">
+				<a href="#"><i class="fa-brands fa-facebook"></i></a> <a href="#"><i
+					class="fa-brands fa-instagram"></i></a> <a href="#"><i
+					class="fa-brands fa-twitter"></i></a> <a href="#"><i
+					class="fa-brands fa-youtube"></i></a>
+			</div>
+		</div>
+		<div class="footer-box">
+			<h2>Categories</h2>
+			<a href="#">Fruits & Vegetables</a> <a href="#">Dairy Products</a> <a
+				href="#">Package Foods</a> <a href="#">Beverages</a>
+		</div>
+		<div class="footer-box">
+			<h2>Useful Links</h2>
+			<a href="#">Payments & Tax</a> <a href="#">Terms Of Use</a> <a
+				href="#">My Blogs</a> <a href="#">Return Policy</a>
+		</div>
+		<div class="footer-box">
+			<h2>Newsletter</h2>
+			<p>Get 10% with Email Newsletter</p>
+			<form action="">
+				<i class="fa-solid fa-envelope"></i> <input type="email" name=""
+					id="" placeholder="Enter Your Email"> <i
+					class="fa-solid fa-arrow-right"></i>
+			</form>
+		</div>
+	</section>
+
+	<!-- Copyright -->
+	<div class="copyright">
+		<p>&#169; Cart_Wala All Right Reserved</p>
+	</div>
+
+	<!-- Bootstrap JS Bundle -->
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+		crossorigin="anonymous"></script>
+
+	<!-- MDB UI Kit -->
+	<script type="text/javascript" src="/js/mjs/mdb.umd.min.js"></script>
+
+	<!-- Custom JS -->
+	<script src="/assets/controller/console-bsb.js"></script>
+</body>
+</html>

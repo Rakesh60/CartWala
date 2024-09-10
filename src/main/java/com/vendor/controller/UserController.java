@@ -264,8 +264,7 @@ public class UserController {
 	    oldUser.setImagename(imageName);
 	    oldUser.setIsEnabled(true);
 
-	    // Save the updated user before handling the image
-	    UserData updatedUser = userRepository.save(oldUser);
+	
 
 	    // If a new file was uploaded, delete the old profile image and save the new one
 	    if (!file.isEmpty()) {
@@ -285,12 +284,17 @@ public class UserController {
 	        if (oldUser.getImagename() != null && !oldUser.getImagename().isEmpty()) {
 	            File oldImage = new File(uploadDirectory, oldUser.getImagename());
 	            if (oldImage.exists()) {
+	            	System.out.println(oldImage);
 	                oldImage.delete();
 	            }
 	        }
+	        // Save the updated user before handling the image
+    	    UserData updatedUser = userRepository.save(oldUser);
 
 	        // Save the new image file
 	        try {
+	        	
+	           
 	            Path filePath = Paths.get(uploadDirectory.getAbsolutePath(), file.getOriginalFilename());
 	            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 	            session.setAttribute("successMsg", "Profile updated successfully, and new image saved.");

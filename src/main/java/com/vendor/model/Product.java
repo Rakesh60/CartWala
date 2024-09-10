@@ -22,31 +22,31 @@ public class Product {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	 int id;
 
 	@Column(length = 500)
-	private String title;
+	 String title;
 
 	@Column(length = 5000)
-	private String description;
+	 String description;
 
-	private String category;
+	 String category;
 
-	private Double price;
+	 Double price;
 	
-	private int discount;
+	 int discount;
 	
-	private Double discountedPrice;
+	 Double discountedPrice;
 	
-	private Boolean isActive;
+	 Boolean isActive;
 
 	
-	private int stock;
+	 int stock;
 
-	private String imageName;
+	 String imageName;
 	
 	 // Track the user who added/stored the category
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private UserData storedBy;
+     UserData storedBy;
 }

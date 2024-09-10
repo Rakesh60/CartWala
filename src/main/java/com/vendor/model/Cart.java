@@ -17,19 +17,19 @@ import lombok.Setter;
 public class Cart {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	 Integer id;
 
 	@ManyToOne
-	private UserData user;
+	 UserData user;
 
 	@ManyToOne
-	private Product product;
+	 Product product;
 
-	private Integer quantity;
+	 Integer quantity;
 	
 	@Transient
-	private Double totalPrice;
+	 Double totalPrice;
 	
 	@Transient
-	private Double totalOrderdAmount;
+	 Double totalOrderdAmount;
 }

@@ -19,17 +19,17 @@ public class Category {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	 int id;
 	
-	private String name;
+	 String name;
 	
-	private String imagename;
+	 String imagename;
 	
-	private Boolean isActive;
+	 Boolean isActive;
 
 	 // Track the user who added/stored the category
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private UserData storedBy;
+     UserData storedBy;
 
 }

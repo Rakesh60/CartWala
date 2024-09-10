@@ -11,23 +11,23 @@ import lombok.Data;
 public class OrderAddress {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	 Integer id;
 
-	private String firstName;
+	 String firstName;
 
-	private String lastName;
+	 String lastName;
 
-	private String email;
+	 String email;
 
-	private String mobileNo;
+	 String mobileNo;
 
-	private String address;
+	 String address;
 
-	private String city;
+	 String city;
 
-	private String state;
+	 String state;
 
-	private String pincode;
+	 String pincode;
 
 	
 

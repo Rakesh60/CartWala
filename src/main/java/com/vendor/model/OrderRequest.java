@@ -9,23 +9,23 @@ public class OrderRequest {
 
 	
 	
-	private String firstName;
+	 String firstName;
 
-	private String lastName;
+	 String lastName;
 
-	private String email;
+	 String email;
 
-	private String mobileNo;
+	 String mobileNo;
 
-	private String address;
+	 String address;
 
-	private String city;
+	 String city;
 
-	private String state;
+	 String state;
 
-	private String pincode;
+	 String pincode;
 	
-	private String paymentType;
+	 String paymentType;
 
 	
 }

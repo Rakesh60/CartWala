@@ -25,28 +25,28 @@ public class ProductOrder {
 	 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Use appropriate strategy
-    private Long id;
+     Long id;
 
-	private String orderId;
+	 String orderId;
 
-	private Date orderDate;
-
-	@ManyToOne
-	private Product product;
-
-	private Double price;
-
-	private Integer quantity;
+	 Date orderDate;
 
 	@ManyToOne
-	private UserData user;
+	 Product product;
 
-	private String status;
+	 Double price;
 
-	private String paymentType;
+	 Integer quantity;
+
+	@ManyToOne
+	 UserData user;
+
+	 String status;
+
+	 String paymentType;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	private OrderAddress orderAddress;
+	 OrderAddress orderAddress;
 
 	
 

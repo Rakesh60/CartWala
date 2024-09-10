@@ -250,8 +250,11 @@ public class UserController {
 	        return "redirect:/user/profile";
 	    }
 
+	    // Save the old image name before updating
+	    String oldImageName = oldUser.getImagename();
+
 	    // Determine the image name to use (either the old one or the new one if a file was uploaded)
-	    String imageName = file.isEmpty() ? oldUser.getImagename() : file.getOriginalFilename();
+	    String imageName = file.isEmpty() ? oldImageName : file.getOriginalFilename();
 
 	    // Update the fields of the old user with the new data
 	    oldUser.setName(user.getName());
@@ -264,7 +267,8 @@ public class UserController {
 	    oldUser.setImagename(imageName);
 	    oldUser.setIsEnabled(true);
 
-	
+	    // Save the updated user before handling the image
+	    UserData updatedUser = userRepository.save(oldUser);
 
 	    // If a new file was uploaded, delete the old profile image and save the new one
 	    if (!file.isEmpty()) {
@@ -280,21 +284,17 @@ public class UserController {
 	            }
 	        }
 
-	        // Delete the old profile image if it exists and is not the default image
-	        if (oldUser.getImagename() != null && !oldUser.getImagename().isEmpty()) {
-	            File oldImage = new File(uploadDirectory, oldUser.getImagename());
+	     // Delete the old profile image if it exists and is not the default image
+	        if (oldImageName != null && !oldImageName.isEmpty() && !"default.jpg".equals(oldImageName)) {
+	            File oldImage = new File(uploadDirectory, oldImageName);
 	            if (oldImage.exists()) {
-	            	System.out.println(oldImage);
 	                oldImage.delete();
 	            }
 	        }
-	        // Save the updated user before handling the image
-    	    UserData updatedUser = userRepository.save(oldUser);
+
 
 	        // Save the new image file
 	        try {
-	        	
-	           
 	            Path filePath = Paths.get(uploadDirectory.getAbsolutePath(), file.getOriginalFilename());
 	            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 	            session.setAttribute("successMsg", "Profile updated successfully, and new image saved.");

@@ -153,7 +153,7 @@
 													<label for="inputCategory" class="form-label">Category</label>
 													<select id="inputCategory" class="form-select"
 														name="category">
-														<option selected disabled>[[${product.title}]]</option>
+														<option selected disabled>---select---</option>
 														<option th:each="c : ${category}" th:value="${c.name}"
 															th:text="${c.name}"
 															th:selected="${product.category} == ${c.name}"></option>

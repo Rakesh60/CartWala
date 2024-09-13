@@ -173,6 +173,10 @@ public class UserController {
 
 		UserData user = getLoggedInUserData(p);
 		orderService.saveOrder(user.getId(), request);
+		
+		
+		 // Empty the user's cart after saving the order
+	    cartService.emptyCartByUser(user.getId());
 
 		return "/user/paymentSuccess";
 	}
@@ -183,7 +187,7 @@ public class UserController {
 			UserData loggedInUserData = getLoggedInUserData(p);
 			List<ProductOrder> orders = orderService.getOredrByUser(loggedInUserData.getId());
 			m.addAttribute("orders", orders);
-			System.out.println(orders);
+			//System.out.println(orders);
 			return "user/myOrders";
 		} catch (Exception e) {
 			e.printStackTrace(); // Log the exception for debugging

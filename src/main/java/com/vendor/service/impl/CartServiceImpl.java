@@ -16,6 +16,8 @@ import com.vendor.repository.ProductRepository;
 import com.vendor.repository.UserRepository;
 import com.vendor.service.CartService;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class CartServiceImpl implements CartService {
 
@@ -104,6 +106,13 @@ public class CartServiceImpl implements CartService {
 	    cart.setQuantity(updatedQty);
 	    cartRepository.save(cart);
 	}
+
+	@Override
+	@Transactional
+	public void emptyCartByUser(Integer userId) {
+	    cartRepository.deleteByUserId(userId);
+	}
+
 
 
 }

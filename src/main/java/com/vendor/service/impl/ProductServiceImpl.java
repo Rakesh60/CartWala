@@ -76,11 +76,13 @@ public class ProductServiceImpl implements ProductService {
 	//Pagination
 	@Override
 	public Page<Product> getAllActiveProductPagination(Integer pageNo, Integer pageSize,String category) {
-		
-		Pageable pagable= PageRequest.of(pageNo, pageSize);
 		Page<Product> pageProduct=null;
+		Pageable pagable= PageRequest.of(pageNo, pageSize);
 		
+		
+		System.out.println(category);
 		if (ObjectUtils.isEmpty(category)) {
+			
 			pageProduct= productRepository.findByIsActiveTrue(pagable);
 		} else {
 			pageProduct= productRepository.findByCategory(pagable,category);

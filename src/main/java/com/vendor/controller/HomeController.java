@@ -3,6 +3,8 @@ package com.vendor.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -91,20 +93,28 @@ public class HomeController {
 	}
 
 	@GetMapping("/products")
-	public String products(Model m, @RequestParam(value = "category", defaultValue = "") String category,@RequestParam(name="pageNo",defaultValue = "0") Integer pageNo,@RequestParam(name="pageSize",defaultValue = "3") Integer pageSize ) {
-		
-		m.addAttribute("paramValue", category);
+	public String products(Model m, @RequestParam(value = "category", defaultValue = "") String category,@RequestParam(name="pageNo",defaultValue = "0") Integer pageNo,@RequestParam(name="pageSize",defaultValue = "3") Integer pageSize ) throws UnsupportedEncodingException {
+		// Step 1: Encode the category parameter for URL safety (if needed for redirection or further URL use)
+	    String encodedCategory = URLEncoder.encode(category, "UTF-8");
+	  
+	    System.out.println("Encoded Category: " + encodedCategory);
 
-		
+	    // Step 2: Decode the category for database querying
+	    String decodedCategory = URLDecoder.decode(category, "UTF-8");
+	    System.out.println("Decoded Category for DB query: " + decodedCategory);
+	    
+	    
+	    
+	    m.addAttribute("paramValue", decodedCategory);  // For frontend URL safe usage
 		List<Category> categories = categoryService.getAllActiveCategory();
 		m.addAttribute("categories", categories);
 
 		//List<Product> products = productService.getAllActiveProducts(category);
 		//m.addAttribute("products", products);
 		
-		Page<Product> pageData = productService.getAllActiveProductPagination(pageNo,pageSize,category);
-		List<Product> products = pageData.getContent();
+		Page<Product> pageData = productService.getAllActiveProductPagination(pageNo,pageSize,decodedCategory);
 		
+		List<Product> products = pageData.getContent();
 		m.addAttribute("products", products);
 		m.addAttribute("productsSize", products.size());
 		m.addAttribute("pageNo", pageData.getNumber());

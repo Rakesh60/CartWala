@@ -1,10 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-	th:replace="~{seller/adminbase::layout(~{::body})}">
+	>
 <head>
 <meta charset="UTF-8" />
 <title>Add Category</title>
-<!-- Font Awesome -->
+
+<!-- CSS Files -->
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/jsvectormap/dist/css/jsvectormap.min.css" />
+<link rel="stylesheet" href="/assets/css/console-bsb.css" />
 <link
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
 	rel="stylesheet" />
@@ -18,6 +24,53 @@
 	rel="stylesheet" />
 </head>
 <body>
+		<nav
+		class="navbar navbar-expand-lg navbar-custom bg-primary bg-gradient text-opacity sticky-top ">
+		<div class="container-fluid">
+			<a class="navbar-brand ms-5" href="#">Cart Wala</a>
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#navbarNav"
+				aria-controls="navbarNav" aria-expanded="false"
+				aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav ms-auto">
+					<li class="nav-item"><a class="nav-link" href="/seller/">Home</a>
+					</li>
+					<li class="nav-item"><a class="nav-link"
+						href="/seller/category">Add Category</a></li>
+					
+					<li class="nav-item"><a class="nav-link"
+						href="/seller/loadProducts">Add Products</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/seller/viewproducts">View Products</a></li>
+				</ul>
+
+
+				<div class="dropdown me-2">
+					<button class="btn btn-primary dropdown-toggle" type="button"
+						id="dropdownMenuButton" data-mdb-dropdown-init
+						data-mdb-ripple-init aria-expanded="false">
+						[[${user.name.split(' ')[0]}]]  <i class="fa-solid fa-user"></i>
+					</button>
+					<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<li><a class="dropdown-item" href="#">Profile</a></li>
+						<li><a class="dropdown-item" href="#">Orders</a></li>
+						<li><a href="/logout" class="dropdown-item"> Logout <i
+					class="fa-solid fa-power-off"></i>
+				</a></li>
+					</ul>
+				</div>
+
+
+
+				
+			</div>
+		</div>
+	</nav>
+
+
 	<div class="container">
 		<div class="d-flex justify-content-around mt-4">
 			<div>
@@ -126,7 +179,16 @@
 			</div>
 		</div>
 	</div>
+  <script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+		crossorigin="anonymous"></script>
 
+
+	<!-- MDB -->
+	<script type="text/javascript" src="/js/mjs/mdb.umd.min.js"></script>
+	<!-- Custom scripts -->
+	<script type="text/javascript"></script>
 	<!-- Bootstrap JavaScript Libraries -->
 	<script defer src="https://cdn.datatables.net/2.1.4/js/dataTables.js"></script>
 	<script src="https://code.jquery.com/jquery-3.7.1.js"

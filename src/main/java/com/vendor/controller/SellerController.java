@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
@@ -26,6 +27,7 @@ import com.vendor.model.Category;
 import com.vendor.model.Product;
 import com.vendor.model.ProductOrder;
 import com.vendor.model.UserData;
+import com.vendor.repository.UserRepository;
 import com.vendor.service.CategoryService;
 import com.vendor.service.OrderService;
 import com.vendor.service.ProductService;
@@ -54,6 +56,13 @@ public class SellerController {
     
     @Autowired
     private CommonUtil commonUtil;
+    
+    @Autowired
+    private UserRepository userRepository;
+    
+    
+    @Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 
     @ModelAttribute
     public void getUserDetails(Principal p, Model m) {
@@ -63,7 +72,14 @@ public class SellerController {
             m.addAttribute("user", userData);
         }
     }
-
+    
+    private UserData getLoggedInUserData(Principal p) {
+		String email = p.getName();
+		UserData userByEmail = userService.getUserByEmail(email);
+		return userByEmail;
+	}
+    
+    
     @GetMapping("/")
     public String index() {
         return "seller/index";
@@ -413,5 +429,112 @@ public class SellerController {
 	 * 
 	 * return "redirect:/seller/orderHistory"; }
 	 */
+    
+    
+    
+    @GetMapping("/profile")
+	public String Profile(Model m,Principal p) {
+		
+		return "seller/profile";
+	}
+    
+    
+    @PostMapping("/update-profile")
+	public String updateUserProfile(@ModelAttribute UserData user, @RequestParam("file") MultipartFile file,
+	                                HttpSession session) throws IOException {
+
+	    // Retrieve the old user profile based on the ID
+	    UserData oldUser = userRepository.findById(user.getId()).orElse(null);
+
+	    if (oldUser == null) {
+	        session.setAttribute("errorMsg", "User not found.");
+	        return "redirect:/seller/profile";
+	    }
+
+	    // Save the old image name before updating
+	    String oldImageName = oldUser.getImagename();
+
+	    // Determine the image name to use (either the old one or the new one if a file was uploaded)
+	    String imageName = file.isEmpty() ? oldImageName : file.getOriginalFilename();
+
+	    // Update the fields of the old user with the new data
+	    oldUser.setName(user.getName());
+	    oldUser.setMobileNumber(user.getMobileNumber());
+	    oldUser.setEmail(user.getEmail());
+	    oldUser.setAddress(user.getAddress());
+	    oldUser.setCity(user.getCity());
+	    oldUser.setState(user.getState());
+	    oldUser.setPincode(user.getPincode());
+	    oldUser.setImagename(imageName);
+	    oldUser.setIsEnabled(true);
+
+	    // Save the updated user before handling the image
+	    UserData updatedUser = userRepository.save(oldUser);
+
+	    // If a new file was uploaded, delete the old profile image and save the new one
+	    if (!file.isEmpty()) {
+	        String uploadDir = "uploads/img/profile_img";
+	        File uploadDirectory = new File(uploadDir);
+
+	        // Create directories if they don't exist
+	        if (!uploadDirectory.exists()) {
+	            boolean dirsCreated = uploadDirectory.mkdirs();
+	            if (!dirsCreated) {
+	                session.setAttribute("errorMsg", "Failed to create upload directory.");
+	                return "redirect:/seller/profile";
+	            }
+	        }
+
+	     // Delete the old profile image if it exists and is not the default image
+	        if (oldImageName != null && !oldImageName.isEmpty() && !"default.jpg".equals(oldImageName)) {
+	            File oldImage = new File(uploadDirectory, oldImageName);
+	            if (oldImage.exists()) {
+	                oldImage.delete();
+	            }
+	        }
+
+
+	        // Save the new image file
+	        try {
+	            Path filePath = Paths.get(uploadDirectory.getAbsolutePath(), file.getOriginalFilename());
+	            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+	            session.setAttribute("successMsg", "Profile updated successfully, and new image saved.");
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	            session.setAttribute("errorMsg", "Failed to save the new image.");
+	            return "redirect:/seller/profile";
+	        }
+	    }
+
+	    return "redirect:/seller/profile";
+	}
+    
+    
+	//Change Password
+	
+	@PostMapping("/change-password")
+	public String changePassword(@RequestParam String newPassword,@RequestParam String currentPassword,Principal p,HttpSession session) {
+		UserData loggedInUserData = getLoggedInUserData(p);
+		boolean matches = passwordEncoder.matches(currentPassword, loggedInUserData.getPassword());
+		
+		 if (matches) {
+			 String encode = passwordEncoder.encode(newPassword);
+			 loggedInUserData.setPassword(encode);
+			 UserData savedUser = userService.updateUser(loggedInUserData);
+			 if (ObjectUtils.isEmpty(savedUser)) {
+					session.setAttribute("errorMsg","Password not updated");
+
+			} else {
+				session.setAttribute("successMsg","Password saved successfullly");
+
+			}
+			
+		} else {
+			session.setAttribute("errorMsg",currentPassword+" is Incorrect Password");
+		}
+		
+		return "redirect:/seller/profile";
+	}
+
 
 }

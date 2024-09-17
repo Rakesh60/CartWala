@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -72,7 +73,7 @@ public class HomeController {
 		}
 
 	}
-
+	
 	@GetMapping("/")
 	public String index(Model m) {
 		List<Category> categories = categoryService.getAllActiveCategory();
@@ -90,6 +91,12 @@ public class HomeController {
 	@GetMapping("/register")
 	public String register() {
 		return "register";
+	}
+	
+	@GetMapping("/adminform")
+	public String adminregister() {
+		
+		return "adminform";
 	}
 	
 	
@@ -190,7 +197,14 @@ public class HomeController {
 	@PostMapping("/saveuser")
 	public String saveUser(@ModelAttribute UserData user, @RequestParam("file") MultipartFile file, HttpSession session)
 			throws IOException {
-
+		 // Check if the email is already registered
+	    UserData existingUser = userService.getUserByEmail(user.getEmail());
+	    if (existingUser != null) {
+	        session.setAttribute("errorMsg", "User already registered with this email");
+	        return "redirect:/register";
+	    }	
+		
+		
 		// Check if the file is empty or not
 		String imageName;
 		if (file != null && !file.isEmpty()) {

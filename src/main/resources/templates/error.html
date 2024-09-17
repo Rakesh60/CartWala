@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
-    <title>Access Denied</title>
+    <title>[[${title}]]</title>
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -24,7 +24,7 @@
               
               <!-- Text Column -->
               <div class="col-md-6 d-flex flex-column justify-content-center p-4">
-                <h1 class="text-danger text-center">Access Denied</h1>
+                <h1 class="text-danger text-center">[[${title}]]</h1>
                 <p class="lead text-center mt-3" th:text="${errorMessage}"></p>
                 <div class="text-center mt-4">
                   <a href="/" class="btn btn-primary btn-lg">Go to Home</a>

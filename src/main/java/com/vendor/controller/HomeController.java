@@ -91,28 +91,30 @@ public class HomeController {
 	public String register() {
 		return "register";
 	}
+	
+	
+	@GetMapping("/myproducts")
+	public String myproducts(Model m, @RequestParam(value = "category", defaultValue = "") String category,@RequestParam(name="pageNo",defaultValue = "0") Integer pageNo,@RequestParam(name="pageSize",defaultValue = "3") Integer pageSize ) {
+		Page<Product> products = productService.getAllActiveProductPagination(pageNo,pageSize,category);
+		m.addAttribute("products", products);
+		m.addAttribute("category",categoryService.getAllCategory());
+		return "myproducts";
+	}
 
 	@GetMapping("/products")
 	public String products(Model m, @RequestParam(value = "category", defaultValue = "") String category,@RequestParam(name="pageNo",defaultValue = "0") Integer pageNo,@RequestParam(name="pageSize",defaultValue = "3") Integer pageSize ) throws UnsupportedEncodingException {
-		// Step 1: Encode the category parameter for URL safety (if needed for redirection or further URL use)
-	    String encodedCategory = URLEncoder.encode(category, "UTF-8");
-	  
-	    System.out.println("Encoded Category: " + encodedCategory);
-
-	    // Step 2: Decode the category for database querying
-	    String decodedCategory = URLDecoder.decode(category, "UTF-8");
-	    System.out.println("Decoded Category for DB query: " + decodedCategory);
+		
 	    
 	    
-	    
-	    m.addAttribute("paramValue", decodedCategory);  // For frontend URL safe usage
+	    System.out.println("Category..........:"+category);
+	    m.addAttribute("paramValue",category);  // For frontend URL safe usage
 		List<Category> categories = categoryService.getAllActiveCategory();
 		m.addAttribute("categories", categories);
 
 		//List<Product> products = productService.getAllActiveProducts(category);
 		//m.addAttribute("products", products);
 		
-		Page<Product> pageData = productService.getAllActiveProductPagination(pageNo,pageSize,decodedCategory);
+		Page<Product> pageData = productService.getAllActiveProductPagination(pageNo,pageSize,category);
 		
 		List<Product> products = pageData.getContent();
 		m.addAttribute("products", products);

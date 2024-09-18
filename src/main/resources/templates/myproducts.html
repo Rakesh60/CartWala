@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
-    <title>FreshCart - eCommerce HTML Template</title>
+    <title>Cart Wala</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta
@@ -115,11 +115,14 @@
 
                     <li th:each="cat: ${category}">
                       <a
-                        class="dropdown-item mb-1"
+                        class="dropdown-item mb-1 "
+                        th:classappend="${paramValue == cat.name} ? 'active ' : ''"
                         th:href="@{'/myproducts?category='+${cat.name}}"
+                        
                       >
                         <img
                           th:src="@{'/uploads/img/category_img/'+${cat.imagename}}"
+                          height="45px"
                           width="45px"
                           alt=""
                           srcset=""
@@ -132,14 +135,14 @@
                       <a
                         href="/myproducts"
                         class="list-group-item list-group-item-action"
-                        th:classappend="${paramValue==''}?'active bg-success':''"
+                        th:classappend="${paramValue==''}?'active bg-primary':''"
                         >All</a
                       >
                       <a
                         th:each="c:${category}"
                         th:href="@{'/myproducts?category='+${c.name}}"
                         class="list-group-item list-group-item-action"
-                        th:classappend="${paramValue==c.name}?'active bg-success':''"
+                        th:classappend="${paramValue==c.name}?'active bg-primary':''"
                         >[[${c.name}]]</a
                       >
                     </div>
@@ -170,7 +173,9 @@
             <div class="card mb-4 bg-light border-0">
               <!-- card body -->
               <div class="card-body p-9">
-                <h1 class="mb-0">Snacks & Munchies</h1>
+                <h1 class="mb-0" th:text="${paramValue != null and paramValue.length() > 0 ? paramValue : 'Browse our Products'}"></h1>
+
+                
               </div>
             </div>
 

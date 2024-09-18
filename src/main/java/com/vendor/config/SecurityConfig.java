@@ -50,7 +50,7 @@ public class SecurityConfig {
 		                .requestMatchers("/seller/**").hasRole("SELLER") // Only SELLER can access /seller/** URLs
 
 						.requestMatchers("/user/**").hasRole("USER") // Only USER can access /user/** URLs
-
+						 .requestMatchers("/forgot", "/reset-password", "/signin", "/register", "/public/**").permitAll() // Permit public access to these URLs
 						.requestMatchers("/", "/products", "/product/**").hasAnyRole("USER", "ANONYMOUS") // Restrict
 																											// ADMIN
 																											// from

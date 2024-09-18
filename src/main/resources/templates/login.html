@@ -13,73 +13,79 @@
 
 	<section>
 	<div th:if="${param.error}">
-				<div
-					class=" alert alert-danger alert-dismissible fade show z-3 position-absolute card ms-4 mt-2"
-					role="alert">
-					<strong>[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</strong>
-					<button type="button" class="btn-close" data-bs-dismiss="alert"
-						aria-label="Close"></button>
-				</div>
-			</div>
+		<div
+			class=" alert alert-danger alert-dismissible fade show z-3 position-absolute card ms-4 mt-2"
+			role="alert">
+			<strong>[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</strong>
+			<button type="button" class="btn-close" data-bs-dismiss="alert"
+				aria-label="Close"></button>
+		</div>
+	</div>
 	<div th:if="${param.logout}">
-				<div
-					class=" alert alert-success alert-dismissible fade show z-3 position-absolute card ms-4 mt-2"
-					role="alert">
-					<strong>Logged Out</strong>
-					<button type="button" class="btn-close" data-bs-dismiss="alert"
-						aria-label="Close"></button>
-				</div>
-			</div>
-<div class="bg-warning bg-opacity-10 p-4 container-fluid">
-    <div th:class="'container col-10 col-md-6 col-lg-3 p-4 mt-3 mb-2 rounded-3 ' +
+		<div
+			class=" alert alert-success alert-dismissible fade show z-3 position-absolute card ms-4 mt-2"
+			role="alert">
+			<strong>Logged Out</strong>
+			<button type="button" class="btn-close" data-bs-dismiss="alert"
+				aria-label="Close"></button>
+		</div>
+	</div>
+	
+	
+	
+
+		<div class="bg-warning bg-opacity-10 p-4 container-fluid">
+			<div
+				th:class="'container col-10 col-md-6 col-lg-3 p-4 mt-3 mb-2 rounded-3 ' +
         (${param.error} ? 'card border border-danger' : 'card')">
-        
-        <h2 class="text-center">Login Here</h2>
 
-        <form action="/login" method="post">
-            <!-- Email input -->
-            <div data-mdb-input-init class="form-outline mb-4">
-                <input type="email" name="username" id="form2Example1"
-                    class="form-control" /> 
-                <label class="form-label" for="form2Example1">Email address</label>
-            </div>
+				<h2 class="text-center">Login Here</h2>
 
-            <!-- Password input -->
-            <div data-mdb-input-init class="form-outline mb-4">
-                <input type="password" name="password" id="form2Example2"
-                    class="form-control" /> 
-                <label class="form-label" for="form2Example2">Password</label>
-            </div>
+				<form action="/login" method="post">
+					<!-- Email input -->
+					<div data-mdb-input-init class="form-outline mb-4">
+						<input type="email" name="username" id="form2Example1"
+							class="form-control" /> <label class="form-label"
+							for="form2Example1">Email address</label>
+					</div>
 
-            <!-- 2 column grid layout for inline styling -->
-            <div class="row mb-4">
-                <div class="col d-flex justify-content-center">
-                    <!-- Checkbox -->
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value=""
-                            id="form2Example34" checked /> 
-                        <label class="form-check-label"
-                            for="form2Example34"> Remember me </label>
-                    </div>
-                </div>
+					<!-- Password input -->
+					<div data-mdb-input-init class="form-outline mb-4">
+						<input type="password" name="password" id="form2Example2"
+							class="form-control" /> <label class="form-label"
+							for="form2Example2">Password</label>
+					</div>
 
-                <div class="col text-end">
-                    <!-- Simple link -->
-                    <a href="/forgot" class="text-warning">Forgot password?</a>
-                </div>
-            </div>
+					<!-- 2 column grid layout for inline styling -->
+					<div class="row mb-4">
+						<div class="col d-flex justify-content-center">
+							<!-- Checkbox -->
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" value=""
+									id="form2Example34" checked /> <label class="form-check-label"
+									for="form2Example34"> Remember me </label>
+							</div>
+						</div>
 
-            <!-- Submit button -->
-            <button data-mdb-ripple-init type="submit"
-                class="btn btn-success btn-block mb-4">Sign in</button>
+						<div class="col text-end">
+							<!-- Simple link -->
+							<a href="/forgot" class="text-warning">Forgot password?</a>
+						</div>
+					</div>
 
-            <!-- Register buttons -->
-            <div class="text-center">
-                <p>Not a member? <a href="register" class="text-danger">Register</a></p>
-            </div>
-        </form>
-    </div>
-</div>
+					<!-- Submit button -->
+					<button data-mdb-ripple-init type="submit"
+						class="btn btn-success btn-block mb-4">Sign in</button>
+
+					<!-- Register buttons -->
+					<div class="text-center">
+						<p>
+							Not a member? <a href="register" class="text-danger">Register</a>
+						</p>
+					</div>
+				</form>
+			</div>
+		</div>
 
 	</section>
 

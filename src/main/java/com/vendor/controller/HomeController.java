@@ -104,6 +104,7 @@ public class HomeController {
 	public String myproducts(Model m, @RequestParam(value = "category", defaultValue = "") String category,@RequestParam(name="pageNo",defaultValue = "0") Integer pageNo,@RequestParam(name="pageSize",defaultValue = "3") Integer pageSize ) {
 		Page<Product> products = productService.getAllActiveProductPagination(pageNo,pageSize,category);
 		m.addAttribute("products", products);
+		m.addAttribute("paramValue",category);
 		m.addAttribute("category",categoryService.getAllCategory());
 		return "myproducts";
 	}

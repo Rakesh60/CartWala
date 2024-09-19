@@ -73,7 +73,7 @@ public class HomeController {
 		}
 
 	}
-	
+
 	@GetMapping("/")
 	public String index(Model m) {
 		List<Category> categories = categoryService.getAllActiveCategory();
@@ -92,49 +92,86 @@ public class HomeController {
 	public String register() {
 		return "register";
 	}
-	
+
 	@GetMapping("/adminform")
 	public String adminregister() {
-		
+
 		return "adminform";
-	}
-	
-	
-	@GetMapping("/myproducts")
-	public String myproducts(Model m, @RequestParam(value = "category", defaultValue = "") String category,@RequestParam(name="pageNo",defaultValue = "0") Integer pageNo,@RequestParam(name="pageSize",defaultValue = "3") Integer pageSize ) {
-		Page<Product> products = productService.getAllActiveProductPagination(pageNo,pageSize,category);
-		m.addAttribute("products", products);
-		m.addAttribute("paramValue",category);
-		m.addAttribute("category",categoryService.getAllCategory());
-		return "myproducts";
 	}
 
 	@GetMapping("/products")
-	public String products(Model m, @RequestParam(value = "category", defaultValue = "") String category,@RequestParam(name="pageNo",defaultValue = "0") Integer pageNo,@RequestParam(name="pageSize",defaultValue = "3") Integer pageSize ) throws UnsupportedEncodingException {
-		
-	    
-	    
-	    System.out.println("Category..........:"+category);
-	    m.addAttribute("paramValue",category);  // For frontend URL safe usage
-		List<Category> categories = categoryService.getAllActiveCategory();
-		m.addAttribute("categories", categories);
+	public String myproducts(Model m, @RequestParam(value = "category", defaultValue = "") String category,
+			@RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
+			@RequestParam(name = "pageSize", defaultValue = "12") Integer pageSize) {
 
-		//List<Product> products = productService.getAllActiveProducts(category);
-		//m.addAttribute("products", products);
-		
-		Page<Product> pageData = productService.getAllActiveProductPagination(pageNo,pageSize,category);
-		
-		List<Product> products = pageData.getContent();
-		m.addAttribute("products", products);
-		m.addAttribute("productsSize", products.size());
-		m.addAttribute("pageNo", pageData.getNumber());
-		m.addAttribute("pageSize", pageSize);
-		m.addAttribute("totalElements", pageData.getNumberOfElements());
-		m.addAttribute("totalPages", pageData.getTotalPages());
-		m.addAttribute("isFirst", pageData.isFirst());
-		m.addAttribute("isLast", pageData.isLast());
+		System.out.println("Category..........:" + category);
+		m.addAttribute("paramValue", category); // For frontend URL safe usage
+		List<Category> categories = categoryService.getAllActiveCategory();
+		m.addAttribute("category", categories);
+
+		List<Product> products;
+
+		if (!category.isEmpty()) {
+			// Fetch all products for the selected category, ignoring pagination
+			products = productService.getAllActiveProducts(category); // Assuming this method fetches all products
+			m.addAttribute("products", products);
+			m.addAttribute("productsSize", products.size());
+			// Set additional attributes for consistent UI handling (no pagination in this
+			// case)
+			m.addAttribute("pageNo", 0);
+			m.addAttribute("pageSize", products.size());
+			m.addAttribute("totalElements", products.size());
+			m.addAttribute("totalPages", 1);
+			m.addAttribute("isFirst", true);
+			m.addAttribute("isLast", true);
+		} else {
+			// Use pagination when no category is selected
+			Page<Product> pageData = productService.getAllActiveProductPagination(pageNo, pageSize, category);
+			products = pageData.getContent();
+			m.addAttribute("products", products);
+			m.addAttribute("productsSize", products.size());
+			m.addAttribute("pageNo", pageData.getNumber());
+			m.addAttribute("pageSize", pageSize);
+			m.addAttribute("totalElements", pageData.getNumberOfElements());
+			m.addAttribute("totalPages", pageData.getTotalPages());
+			m.addAttribute("isFirst", pageData.isFirst());
+			m.addAttribute("isLast", pageData.isLast());
+		}
+
 		return "products";
 	}
+
+	/*
+	 * 
+	 * //old Products page
+	 * 
+	 * @GetMapping("/products") public String products(Model m, @RequestParam(value
+	 * = "category", defaultValue = "") String
+	 * category,@RequestParam(name="pageNo",defaultValue = "0") Integer
+	 * pageNo,@RequestParam(name="pageSize",defaultValue = "3") Integer pageSize )
+	 * throws UnsupportedEncodingException {
+	 * 
+	 * 
+	 * 
+	 * //System.out.println("Category..........:"+category);
+	 * m.addAttribute("paramValue",category); // For frontend URL safe usage
+	 * List<Category> categories = categoryService.getAllActiveCategory();
+	 * m.addAttribute("categories", categories);
+	 * 
+	 * //List<Product> products = productService.getAllActiveProducts(category);
+	 * //m.addAttribute("products", products);
+	 * 
+	 * Page<Product> pageData =
+	 * productService.getAllActiveProductPagination(pageNo,pageSize,category);
+	 * 
+	 * List<Product> products = pageData.getContent(); m.addAttribute("products",
+	 * products); m.addAttribute("productsSize", products.size());
+	 * m.addAttribute("pageNo", pageData.getNumber()); m.addAttribute("pageSize",
+	 * pageSize); m.addAttribute("totalElements", pageData.getNumberOfElements());
+	 * m.addAttribute("totalPages", pageData.getTotalPages());
+	 * m.addAttribute("isFirst", pageData.isFirst()); m.addAttribute("isLast",
+	 * pageData.isLast()); return "products"; }
+	 */
 
 	@GetMapping("/product/{id}")
 	public String product(@PathVariable int id, Model m) {
@@ -155,57 +192,43 @@ public class HomeController {
 	 * m.addAttribute("products", products); m.addAttribute("showBackButton", true);
 	 * return "products"; }
 	 */
-	
-	
+
 	/* search Products with Pagination */
 	@GetMapping("/search-product")
-	public String searchProduct(
-	        @RequestParam String st,
-	        @RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
-	        @RequestParam(name = "pageSize", defaultValue = "6") Integer pageSize,
-	        Model m) {
+	public String searchProduct(@RequestParam(value = "category", defaultValue = "") String category,
+			@RequestParam String st, @RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
+			@RequestParam(name = "pageSize", defaultValue = "6") Integer pageSize, Model m) {
 
-	    Page<Product> pageData = productService.searchProductWithPagination(st, pageNo, pageSize);
-	    List<Product> products = pageData.getContent();
+		System.out.println("Category..........:" + category);
+		m.addAttribute("paramValue", category); // For frontend URL safe usage
+		List<Category> categories = categoryService.getAllActiveCategory();
+		m.addAttribute("category", categories);
 
-	    m.addAttribute("products", products);
-	    m.addAttribute("showBackButton", true);
-	    m.addAttribute("pageNo", pageData.getNumber());
-	    m.addAttribute("pageSize", pageSize);
-	    m.addAttribute("totalElements", pageData.getNumberOfElements());
-	    m.addAttribute("totalPages", pageData.getTotalPages());
-	    m.addAttribute("isFirst", pageData.isFirst());
-	    m.addAttribute("isLast", pageData.isLast());
-	    m.addAttribute("searchTerm", st); // To persist the search term
-	    return "products";
+		Page<Product> pageData = productService.searchProductWithPagination(st, pageNo, pageSize);
+		List<Product> products = pageData.getContent();
+
+		m.addAttribute("products", products);
+		m.addAttribute("showBackButton", true);
+		m.addAttribute("pageNo", pageData.getNumber());
+		m.addAttribute("pageSize", pageSize);
+		m.addAttribute("totalElements", pageData.getNumberOfElements());
+		m.addAttribute("totalPages", pageData.getTotalPages());
+		m.addAttribute("isFirst", pageData.isFirst());
+		m.addAttribute("isLast", pageData.isLast());
+		m.addAttribute("searchTerm", st); // To persist the search term
+		return "products";
 	}
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 	@PostMapping("/saveuser")
 	public String saveUser(@ModelAttribute UserData user, @RequestParam("file") MultipartFile file, HttpSession session)
 			throws IOException {
-		 // Check if the email is already registered
-	    UserData existingUser = userService.getUserByEmail(user.getEmail());
-	    if (existingUser != null) {
-	        session.setAttribute("errorMsg", "User already registered with this email");
-	        return "redirect:/register";
-	    }	
-		
-		
+		// Check if the email is already registered
+		UserData existingUser = userService.getUserByEmail(user.getEmail());
+		if (existingUser != null) {
+			session.setAttribute("errorMsg", "User already registered with this email");
+			return "redirect:/register";
+		}
+
 		// Check if the file is empty or not
 		String imageName;
 		if (file != null && !file.isEmpty()) {

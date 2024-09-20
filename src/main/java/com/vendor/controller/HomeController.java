@@ -87,6 +87,17 @@ public class HomeController {
 	public String login() {
 		return "login";
 	}
+	
+	@GetMapping("/mylogin")
+	public String Signin() {
+		
+		return "loginRaj";
+	}
+	@GetMapping("/auth")
+	public String Auth() {
+		
+		return "auth";
+	}
 
 	@GetMapping("/register")
 	public String register() {
@@ -104,7 +115,7 @@ public class HomeController {
 			@RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
 			@RequestParam(name = "pageSize", defaultValue = "12") Integer pageSize) {
 
-		System.out.println("Category..........:" + category);
+		//System.out.println("Category..........:" + category);
 		m.addAttribute("paramValue", category); // For frontend URL safe usage
 		List<Category> categories = categoryService.getAllActiveCategory();
 		m.addAttribute("category", categories);
@@ -218,54 +229,35 @@ public class HomeController {
 		m.addAttribute("searchTerm", st); // To persist the search term
 		return "products";
 	}
-
 	@PostMapping("/saveuser")
-	public String saveUser(@ModelAttribute UserData user, @RequestParam("file") MultipartFile file, HttpSession session)
-			throws IOException {
-		// Check if the email is already registered
-		UserData existingUser = userService.getUserByEmail(user.getEmail());
-		if (existingUser != null) {
-			session.setAttribute("errorMsg", "User already registered with this email");
-			return "redirect:/register";
-		}
+	public String saveUser(@ModelAttribute UserData user, @RequestParam(value = "file", required = false) MultipartFile file, HttpSession session)
+	        throws IOException {
+	    // Check if the email is already registered
+	    UserData existingUser = userService.getUserByEmail(user.getEmail());
+	    if (existingUser != null) {
+	        session.setAttribute("errorMsg", "User already registered with this email");
+	        return "redirect:/register";
+	    }
 
-		// Check if the file is empty or not
-		String imageName;
-		if (file != null && !file.isEmpty()) {
-			imageName = file.getOriginalFilename();
-		} else {
-			imageName = "default.jpg"; // Use a default image if none is uploaded
-		}
-		user.setImagename(imageName);
-		System.out.println(user);
+	    // Always set the image name to "default.jpg"
+	    String imageName = "default.jpg";
 
-		// Save the user
-		UserData savedUser = userService.saveUser(user);
+	    // Set the image name in the user object
+	    user.setImagename(imageName);  // Assuming there's a setter for image name in UserData
 
-		if (!ObjectUtils.isEmpty(savedUser)) {
-			// Define the path where you want to save the file
-			String uploadDir = "uploads/img/profile_img";
-			File uploadDirectory = new File(uploadDir);
+	    // Save the user
+	    UserData savedUser = userService.saveUser(user);
 
-			// Create directories if they don't exist
-			if (!uploadDirectory.exists()) {
-				uploadDirectory.mkdirs();
-			}
+	    if (!ObjectUtils.isEmpty(savedUser)) {
+	        // No file upload logic since image name is always "default.jpg"
+	        session.setAttribute("successMsg", user.getRole() + " Registered Successfully");
+	    } else {
+	        session.setAttribute("errorMsg", "Registration Failed");
+	    }
 
-			// Save the file only if a file was uploaded
-			if (!file.isEmpty()) {
-				Path filePath = Paths.get(uploadDirectory.getAbsolutePath(), file.getOriginalFilename());
-				Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-				System.out.println("File saved to: " + filePath);
-			}
-
-			session.setAttribute("successMsg", user.getRole() + " Registered Successfully");
-		} else {
-			session.setAttribute("errorMsg", "Registration Failed");
-		}
-
-		return "redirect:/register";
+	    return "redirect:/register";
 	}
+
 
 	// Forgot Password Logic
 	@GetMapping("/forgot")

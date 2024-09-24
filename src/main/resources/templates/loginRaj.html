@@ -24,7 +24,7 @@
 	border-radius: 15px;
 	background: #fff;
 	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-	color: #FFA500;
+	color: rgb(0, 0, 0);
 	min-height: 500px;
 }
 
@@ -235,9 +235,8 @@
         // Regex to validate Gmail address
         const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
 
-        // Regex to validate password
-        //const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
-        const passwordRegex = /^\d{3}$/;
+       // Regex to validate password
+        const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
 
         // Generate a random string for the captcha (includes only letters and numbers)
         function generateCaptcha() {

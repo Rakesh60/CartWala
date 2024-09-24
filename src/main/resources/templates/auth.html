@@ -1,258 +1,214 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Register Form</title>
-<!-- Bootstrap CSS -->
-<link
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-	rel="stylesheet">
-<!-- Bootstrap Icons -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
-	rel="stylesheet">
-<style>
-.input-group-text {
-	cursor: pointer;
-	border-radius: 0 10px 10px 0;
-}
-
-.card {
-	padding: 20px;
-	border: none;
-	border-radius: 15px;
-	background: #fff;
-	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-	color: #FFA500;
-	min-height: 600px;
-}
-
-.container {
-	max-width: 1200px;
-	margin-top: 40px;
-}
-
-.card-title {
-	font-weight: bold;
-	font-size: 1.5rem;
-}
-
-.btn-success, .btn-outline-success {
-	border-radius: 20px;
-}
-
-.form-control, .btn {
-	border-radius: 10px;
-}
-
-.form-check-label, .text-success {
-	color: #FFA500 !important;
-}
-
-.captcha-box {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-}
-
-.captcha {
-	padding: 5px 10px;
-	font-weight: bold;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	background-color: #f7f7f7;
-}
-
-.captcha-refresh {
-	cursor: pointer;
-	color: #007bff;
-}
-
-@media ( min-width : 992px) {
-	.card {
-		width: 400px;
-	}
-}
-
-@media ( max-width : 991px) {
-	.card {
-		width: 100%;
-		max-width: 500px;
-		margin-top: 20px;
-	}
-}
-
-@media ( max-width : 767px) {
-	.card {
-		margin-top: 10px;
-		padding: 15px;
-	}
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email and Password Validation Form</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .input-group-text {
+            cursor: pointer;
+            border-radius: 0 10px 10px 0;
+        }
+        .card {
+            padding: 20px;
+            border: none;
+            border-radius: 15px;
+            background: #fff;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            color: #FFA500;
+            min-height: 500px;
+        }
+        .container {
+            max-width: 1200px;
+            margin-top: 40px;
+        }
+        .card-title {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        .btn-success, .btn-outline-success {
+            border-radius: 20px;
+        }
+        .form-control, .btn {
+            border-radius: 10px;
+        }
+        .form-check-label, .text-success {
+            color: #FFA500 !important;
+        }
+        .form-check-input {
+            accent-color: green;
+        }
+        @media (min-width: 992px) {
+            .card {
+                width: 400px;
+            }
+        }
+        @media (max-width: 991px) {
+            .card {
+                width: 100%;
+                max-width: 500px;
+                margin-top: 20px;
+            }
+        }
+        @media (max-width: 767px) {
+            .card {
+                margin-top: 10px;
+                padding: 15px;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="container d-flex align-items-start justify-content-center min-vh-100">
+        <div class="row justify-content-center w-100">
+            <div class="col-lg-4 col-md-6 col-sm-8 col-12">
+                <div class="card shadow-lg">
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <h4 class="card-title text-center mb-4">Register</h4>
+                        <form id="validationForm" class="needs-validation" action="/saveuser" method="post" novalidate>
+                            <!-- Role Radio Buttons -->
+                            <div class="form-group">
+                                <label>Role</label>
+                                <div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="role" id="ROLE_USER" value="ROLE_USER" required checked>
+                                        <label class="form-check-label" for="ROLE_USER">User</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="role" id="ROLE_SELLER" value="ROLE_SELLER" required>
+                                        <label class="form-check-label" for="ROLE_SELLER">Seller</label>
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Please select your role.
+                                    </div>
+                                </div>
+                            </div>
 
-	<div
-		class="container d-flex align-items-start justify-content-center min-vh-100">
-		<div class="row justify-content-center w-100">
-			<div class="col-lg-4 col-md-6 col-sm-8 col-12">
-				<div class="card shadow-lg">
-					<h4 th:if="${param.logout}" class=" text-center text-primary mb-4 ">[[${param.logout}?'Logged
-						out':'']]</h4>
-					<h4 th:if="${param.error}" class=" text-center text-danger mb-4  ">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</h4>
-					<h4 class="card-title text-center mb-4">Register</h4>
-					<div class="card-body d-flex flex-column justify-content-between">
+                            <!-- Full Name Field -->
+                            <div class="form-group">
+                                <label for="fullname">Full Name</label>
+                                <input type="text" class="form-control" id="fullname" name="name" placeholder="Enter your full name" required>
+                                <div class="invalid-feedback" id="nameFeedback">
+                                    Full name must only contain letters and spaces, and be between 2 and 50 characters.
+                                </div>
+                            </div>
 
-						<form id="registerForm" class="needs-validation" novalidate
-							action="/saveuser" method="post" enctype="multipart/form-data">
-							<div class="form-group">
-								<label for="fullName">Full Name</label> <input type="text"
-									name="name" class="form-control" id="fullName"
-									placeholder="Enter your full name" required>
-								<div class="invalid-feedback" id="fullNameFeedback">Please
-									enter a valid name (up to 20 characters).</div>
-							</div>
+                            <!-- Email Field -->
+                            <div class="form-group">
+                                <label for="email">Email address</label>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your Gmail" required>
+                                <div class="invalid-feedback" id="emailFeedback">
+                                    Please provide a valid Gmail address (e.g., example@gmail.com).
+                                </div>
+                            </div>
 
-							<div class="form-group">
-								<label for="email">Email address</label> <input type="email"
-									name="email" class="form-control" id="email"
-									placeholder="Enter your Gmail" required>
-								<div class="invalid-feedback" id="emailFeedback">Please
-									provide a valid Gmail address (e.g., example@gmail.com).</div>
-							</div>
+                            <!-- Password Field -->
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary input-group-text" type="button" id="togglePassword">
+                                            <i class="bi bi-eye-slash" id="toggleIcon"></i>
+                                        </button>
+                                    </div>
+                                    <div class="invalid-feedback" id="passwordFeedback">
+                                        Password must be at least 8 characters long and include at least one uppercase letter, one special character, and one number.
+                                    </div>
+                                </div>
+                            </div>
 
-							<div class="form-group">
-								<label for="password">Password</label>
-								<div class="input-group">
-									<input type="password" name="password" class="form-control"
-										id="password" placeholder="Enter your password" required>
-									<div class="input-group-append">
-										<button
-											class="btn btn-outline-secondary input-group-text rounded-right"
-											type="button" id="togglePassword">
-											<i class="bi bi-eye-slash" id="toggleIcon"></i>
-										</button>
-									</div>
-									<div class="invalid-feedback" id="passwordFeedback">Password
-										must be at least 8 characters long and contain only
-										alphanumeric characters.</div>
-								</div>
-							</div>
+                            <!-- Submit Button -->
+                            <button type="submit" id="submitBtn" class="btn btn-outline-success btn-block mt-4" disabled>Submit</button>
+                        </form>
 
-							<div class="form-group">
-								<label for="role">Register as:</label>
-								<div>
-									<div class="form-check form-check-inline">
-										<input class="form-check-input" type="radio" name="role"
-											id="userRole" value="ROLE_USER" required> <label
-											class="form-check-label" for="userRole">User</label>
-									</div>
-									<div class="form-check form-check-inline">
-										<input class="form-check-input" type="radio" name="role"
-											id="sellerRole" value="ROLE_SELLER" required> <label
-											class="form-check-label" for="sellerRole">Seller</label>
-									</div>
-								</div>
-								<div class="invalid-feedback">Please select a role (User
-									or Seller).</div>
-							</div>
+                        <div class="text-center mt-3">
+                            <small>Already a member? <a href="/signin" class="text-success">Sign In</a></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-							<button type="submit" id="submitBtn"
-								class="btn btn-outline-success btn-block mt-2" disabled>Register</button>
-						</form>
-						<div class="text-center mt-3">
-							<small>Already a member? <a href="/login"
-								class="text-success">Login</a></small>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-	<!-- Bootstrap JS and dependencies -->
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-	<script
-		src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // JavaScript for form validation and show/hide password
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const submitBtn = document.getElementById('submitBtn');
+        const togglePassword = document.getElementById('togglePassword');
+        const toggleIcon = document.getElementById('toggleIcon');
+        const fullnameInput = document.getElementById('fullname');
 
-	<script>
-    // JavaScript for form validation and show/hide password
-    const fullNameInput = document.getElementById('fullName');
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
-    const submitBtn = document.getElementById('submitBtn');
-    const togglePassword = document.getElementById('togglePassword');
-    const toggleIcon = document.getElementById('toggleIcon');
-   
+        // Regex to validate Gmail address
+        const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
 
-    // Regex to validate full name (up to 20 characters)
-    const fullNameRegex = /^[a-zA-Z\s]{1,20}$/;
+        // Regex to validate password
+        const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
 
-    // Regex to validate Gmail address
-    const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+        // Regex to validate full name (letters and spaces only, between 2 and 50 characters)
+        const nameRegex = /^[a-zA-Z\s]{2,50}$/;
 
-    // Regex to validate password (only alphanumeric, minimum 8 characters)
-   const passwordRegex = /^\d{3}$/;
+        // Toggle password visibility
+        togglePassword.addEventListener('click', function () {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
 
-    // Toggle role between User and Seller
-    roleSwitch.addEventListener('change', () => {
-        if (roleSwitch.checked) {
-            roleLabel.textContent = 'User';
-            roleSwitch.value = 'ROLE_USER';
-        } else {
-            roleLabel.textContent = 'Seller';
-            roleSwitch.value = 'ROLE_SELLER';
-        }
-        validateForm();
-    });
-
-    function validateInput(input, regex, feedbackElement) {
-        input.addEventListener('focus', () => {
-            input.addEventListener('input', () => {
-                if (input.value === '') {
-                    input.classList.remove('is-valid', 'is-invalid');
-                    feedbackElement.style.display = 'none';
-                } else if (regex.test(input.value)) {
-                    input.classList.remove('is-invalid');
-                    input.classList.add('is-valid');
-                    feedbackElement.style.display = 'none';
-                } else {
-                    input.classList.remove('is-valid');
-                    input.classList.add('is-invalid');
-                    feedbackElement.style.display = 'block';
-                }
-                validateForm();
-            });
+            // Toggle the eye / eye-slash icon
+            toggleIcon.classList.toggle('bi-eye');
+            toggleIcon.classList.toggle('bi-eye-slash');
         });
-    }
 
-
-
-    function validateForm() {
-        const isFullNameValid = fullNameRegex.test(fullNameInput.value);
-        const isEmailValid = gmailRegex.test(emailInput.value);
-        const isPasswordValid = passwordRegex.test(passwordInput.value);
-        const isRoleSelected = roleSwitch.value !== '';
-
-        submitBtn.disabled = !(isFullNameValid && isEmailValid && isPasswordValid && isRoleSelected);
-
-        if (isFullNameValid && isEmailValid && isPasswordValid && isRoleSelected) {
-            submitBtn.classList.remove('btn-outline-success');
-            submitBtn.classList.add('btn-success');
-        } else {
-            submitBtn.classList.remove('btn-success');
-            submitBtn.classList.add('btn-outline-success');
+        function validateInput(input, regex, feedbackElement) {
+            input.addEventListener('focus', () => {
+                input.addEventListener('input', () => {
+                    if (input.value === '') {
+                        input.classList.remove('is-valid', 'is-invalid');
+                        feedbackElement.style.display = 'none';
+                    } else if (regex.test(input.value)) {
+                        input.classList.remove('is-invalid');
+                        input.classList.add('is-valid');
+                        feedbackElement.style.display = 'none';
+                    } else {
+                        input.classList.remove('is-valid');
+                        input.classList.add('is-invalid');
+                        feedbackElement.style.display = 'block';
+                    }
+                    validateForm();
+                });
+            });
         }
-    }
 
-    // Initialize validation for each input separately
-    validateInput(fullNameInput, fullNameRegex, document.getElementById('fullNameFeedback'));
-    validateInput(emailInput, gmailRegex, document.getElementById('emailFeedback'));
-    validateInput(passwordInput, passwordRegex, document.getElementById('passwordFeedback'));
+        // Check if the form is valid
+        function validateForm() {
+            const isEmailValid = gmailRegex.test(emailInput.value);
+            const isPasswordValid = passwordRegex.test(passwordInput.value);
+            const isFullnameValid = nameRegex.test(fullnameInput.value.trim());
 
-</script>
+            submitBtn.disabled = !(isEmailValid && isPasswordValid && isFullnameValid);
+
+            if (isEmailValid && isPasswordValid && isFullnameValid) {
+                submitBtn.classList.remove('btn-outline-success');
+                submitBtn.classList.add('btn-success');
+            } else {
+                submitBtn.classList.remove('btn-success');
+                submitBtn.classList.add('btn-outline-success');
+            }
+        }
+
+        // Initialize validation for each input separately
+        validateInput(emailInput, gmailRegex, document.getElementById('emailFeedback'));
+        validateInput(passwordInput, passwordRegex, document.getElementById('passwordFeedback'));
+        validateInput(fullnameInput, nameRegex, document.getElementById('nameFeedback'));
+    </script>
 </body>
 </html>

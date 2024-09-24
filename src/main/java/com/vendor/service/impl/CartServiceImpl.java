@@ -11,7 +11,6 @@ import com.vendor.model.Cart;
 import com.vendor.model.Product;
 import com.vendor.model.UserData;
 import com.vendor.repository.CartRepository;
-import com.vendor.repository.CategoryRepository;
 import com.vendor.repository.ProductRepository;
 import com.vendor.repository.UserRepository;
 import com.vendor.service.CartService;
@@ -89,30 +88,41 @@ public class CartServiceImpl implements CartService {
 	@Override
 	public void updateQty(String sy, Integer cid) {
 
-	    Cart cart = cartRepository.findById(cid).orElseThrow(() -> new RuntimeException("Cart not found"));
-	    int updatedQty = cart.getQuantity();
+		// Find the cart item by ID, or throw an exception if not found
+		Cart cart = cartRepository.findById(cid).orElseThrow(() -> new RuntimeException("Cart not found"));
 
-	    if (sy.equalsIgnoreCase("mi")) {
-	        updatedQty -= 1;
+		if (sy.equalsIgnoreCase("del")) {
+			// Delete the item if "del" is passed
+			cartRepository.deleteById(cid);
+			return;
+		}
 
-	        if (updatedQty <= 0) {
-	            cartRepository.deleteById(cid);
-	            return;
-	        }
-	    } else {
-	        updatedQty += 1;
-	    }
+		// Get the current quantity of the cart item
+		int updatedQty = cart.getQuantity();
 
-	    cart.setQuantity(updatedQty);
-	    cartRepository.save(cart);
+		// Handle the increase or decrease of quantity
+		if (sy.equalsIgnoreCase("mi")) {
+			updatedQty -= 1;
+
+			// If the updated quantity is less than or equal to 0, delete the item from the
+			// cart
+			if (updatedQty <= 0) {
+				cartRepository.deleteById(cid);
+				return;
+			}
+		} else {
+			updatedQty += 1;
+		}
+
+		// Update the quantity and save the cart item
+		cart.setQuantity(updatedQty);
+		cartRepository.save(cart);
 	}
 
 	@Override
 	@Transactional
 	public void emptyCartByUser(Integer userId) {
-	    cartRepository.deleteByUserId(userId);
+		cartRepository.deleteByUserId(userId);
 	}
-
-
 
 }

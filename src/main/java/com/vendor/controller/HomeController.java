@@ -87,15 +87,16 @@ public class HomeController {
 	public String login() {
 		return "login";
 	}
-	
+
 	@GetMapping("/mylogin")
 	public String Signin() {
-		
+
 		return "loginRaj";
 	}
+
 	@GetMapping("/auth")
 	public String Auth() {
-		
+
 		return "auth";
 	}
 
@@ -115,7 +116,7 @@ public class HomeController {
 			@RequestParam(name = "pageNo", defaultValue = "0") Integer pageNo,
 			@RequestParam(name = "pageSize", defaultValue = "12") Integer pageSize) {
 
-		//System.out.println("Category..........:" + category);
+		// System.out.println("Category..........:" + category);
 		m.addAttribute("paramValue", category); // For frontend URL safe usage
 		List<Category> categories = categoryService.getAllActiveCategory();
 		m.addAttribute("category", categories);
@@ -229,35 +230,66 @@ public class HomeController {
 		m.addAttribute("searchTerm", st); // To persist the search term
 		return "products";
 	}
+
 	@PostMapping("/saveuser")
-	public String saveUser(@ModelAttribute UserData user, @RequestParam(value = "file", required = false) MultipartFile file, HttpSession session)
-	        throws IOException {
-	    // Check if the email is already registered
-	    UserData existingUser = userService.getUserByEmail(user.getEmail());
-	    if (existingUser != null) {
-	        session.setAttribute("errorMsg", "User already registered with this email");
-	        return "redirect:/register";
-	    }
+	public String saveUser(@ModelAttribute UserData user,
+			@RequestParam(value = "file", required = false) MultipartFile file, HttpSession session)
+			throws IOException {
+		// Check if the email is already registered
+		UserData existingUser = userService.getUserByEmail(user.getEmail());
+		if (existingUser != null) {
+			session.setAttribute("errorMsg", "User already registered with this email");
+			return "redirect:/register";
+		}
 
-	    // Always set the image name to "default.jpg"
-	    String imageName = "default.jpg";
+		// Always set the image name to "default.jpg"
+		String imageName = "default.jpg";
 
-	    // Set the image name in the user object
-	    user.setImagename(imageName);  // Assuming there's a setter for image name in UserData
+		// Set the image name in the user object
+		user.setImagename(imageName); // Assuming there's a setter for image name in UserData
 
-	    // Save the user
-	    UserData savedUser = userService.saveUser(user);
+		UserData savedUser = userService.saveUser(user);
 
-	    if (!ObjectUtils.isEmpty(savedUser)) {
-	        // No file upload logic since image name is always "default.jpg"
-	        session.setAttribute("successMsg", user.getRole() + " Registered Successfully");
-	    } else {
-	        session.setAttribute("errorMsg", "Registration Failed");
-	    }
+		if (!ObjectUtils.isEmpty(savedUser)) {
+			// No file upload logic since image name is always "default.jpg"
+			session.setAttribute("successMsg",
+					user.getRole().substring(user.getRole().indexOf("_") + 1) + " Registered Successfully");
+		} else {
+			session.setAttribute("errorMsg", "Registration Failed");
+		}
 
-	    return "redirect:/register";
+		return "redirect:/register";
 	}
 
+	@PostMapping("/saveadmin")
+	public String saveAdmin(@ModelAttribute UserData user,
+			@RequestParam(value = "file", required = false) MultipartFile file, HttpSession session)
+			throws IOException {
+		// Check if the email is already registered
+		UserData existingUser = userService.getUserByEmail(user.getEmail());
+		if (existingUser != null) {
+			session.setAttribute("errorMsg", "Admin already registered with this email");
+			return "redirect:/register";
+		}
+
+		// Always set the image name to "default.jpg"
+		String imageName = "default.jpg";
+
+		// Set the image name in the user object
+		user.setImagename(imageName); // Assuming there's a setter for image name in UserData
+
+		// Save the user
+		UserData savedUser = userService.saveUser(user);
+
+		if (!ObjectUtils.isEmpty(savedUser)) {
+			// No file upload logic since image name is always "default.jpg"
+			session.setAttribute("successMsg", user.getRole() + " Registered Successfully");
+		} else {
+			session.setAttribute("errorMsg", "Registration Failed");
+		}
+
+		return "redirect:/adminform";
+	}
 
 	// Forgot Password Logic
 	@GetMapping("/forgot")

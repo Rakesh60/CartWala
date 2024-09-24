@@ -1,93 +1,373 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-	th:replace="~{base::layout(~{::section})}">
-<head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Email and Password Validation Form</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <style>
+      .input-group-text {
+        cursor: pointer;
+        border-radius: 0 10px 10px 0;
+      }
 
-<link th:href="@{/css/login.css}" rel="stylesheet" />
+      .card {
+        padding: 20px;
+        border: none;
+        border-radius: 15px;
+        background: #fff;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        color: rgb(18, 139, 66);
+        min-height: 500px;
+      }
 
-</head>
-<body>
-	
+      .container {
+        max-width: 1200px;
+        margin-top: 40px;
+      }
 
-	<section>
-	<div th:if="${param.error}">
-		<div
-			class=" alert alert-danger alert-dismissible fade show z-3 position-absolute card ms-4 mt-2"
-			role="alert">
-			<strong>[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</strong>
-			<button type="button" class="btn-close" data-bs-dismiss="alert"
-				aria-label="Close"></button>
-		</div>
-	</div>
-	<div th:if="${param.logout}">
-		<div
-			class=" alert alert-success alert-dismissible fade show z-3 position-absolute card ms-4 mt-2"
-			role="alert">
-			<strong>Logged Out</strong>
-			<button type="button" class="btn-close" data-bs-dismiss="alert"
-				aria-label="Close"></button>
-		</div>
-	</div>
-	
-	
-	
+      .card-title {
+        font-weight: bold;
+        font-size: 2rem;
+      }
 
-		<div class="bg-warning bg-opacity-10 p-4 container-fluid">
-			<div
-				th:class="'container col-10 col-md-6 col-lg-3 p-4 mt-3 mb-2 rounded-3 ' +
-        (${param.error} ? 'card border border-danger' : 'card')">
+      .btn-success,
+      .btn-outline-success {
+        border-radius: 20px;
+      }
 
-				<h2 class="text-center">Login Here</h2>
+      .form-control,
+      .btn {
+        border-radius: 10px;
+      }
 
-				<form action="/login" method="post">
-					<!-- Email input -->
-					<div data-mdb-input-init class="form-outline mb-4">
-						<input type="email" name="username" id="form2Example1"
-							class="form-control" /> <label class="form-label"
-							for="form2Example1">Email address</label>
-					</div>
+      .form-check-label,
+      .text-success {
+        color: #ffa500 !important;
+      }
 
-					<!-- Password input -->
-					<div data-mdb-input-init class="form-outline mb-4">
-						<input type="password" name="password" id="form2Example2"
-							class="form-control" /> <label class="form-label"
-							for="form2Example2">Password</label>
-					</div>
+      .form-check-input {
+        accent-color: green;
+      }
 
-					<!-- 2 column grid layout for inline styling -->
-					<div class="row mb-4">
-						<div class="col d-flex justify-content-center">
-							<!-- Checkbox -->
-							<div class="form-check">
-								<input class="form-check-input" type="checkbox" value=""
-									id="form2Example34" checked /> <label class="form-check-label"
-									for="form2Example34"> Remember me </label>
-							</div>
-						</div>
+      .remember-me a {
+        text-decoration: none;
+        color: #ffa500;
+      }
 
-						<div class="col text-end">
-							<!-- Simple link -->
-							<a href="/forgot" class="text-warning">Forgot password?</a>
-						</div>
-					</div>
+      .captcha-box {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
 
-					<!-- Submit button -->
-					<button data-mdb-ripple-init type="submit"
-						class="btn btn-success btn-block mb-4">Sign in</button>
+      .captcha {
+        padding: 5px 10px;
+        font-weight: bold;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f7f7f7;
+      }
 
-					<!-- Register buttons -->
-					<div class="text-center">
-						<p>
-							Not a member? <a href="register" class="text-danger">Register</a>
-						</p>
-					</div>
-				</form>
-			</div>
-		</div>
+      .captcha-refresh {
+        cursor: pointer;
+        color: #23364b;
+      }
 
-	</section>
+      @media (min-width: 992px) {
+        .card {
+          width: 400px;
+        }
+      }
 
-</body>
+      @media (max-width: 991px) {
+        .card {
+          width: 100%;
+          max-width: 500px;
+          margin-top: 20px;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .card {
+          margin-top: 10px;
+          padding: 15px;
+        }
+      }
+
+      /* Disable text selection */
+      .no-select {
+        user-select: none; /* Standard syntax */
+        -webkit-user-select: none; /* Safari */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="container d-flex align-items-start justify-content-center min-vh-100"
+    >
+      <div class="row justify-content-center w-100">
+        <div class="col-lg-4 col-md-6 col-sm-8 col-12">
+          <div class="card shadow-lg">
+            <h4 th:if="${param.logout}" class="text-center text-primary mb-4">
+              [[${param.logout}?'Logged out':'']]
+            </h4>
+            <th th:text="${@commonServiceImpl.removeSessionMessage()}"></th>
+            <h4 th:if="${param.error}" class="text-center text-danger mb-4">
+              [[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]
+            </h4>
+            <th th:text="${@commonServiceImpl.removeSessionMessage()}"></th>
+
+            <div class="card-body d-flex flex-column justify-content-between">
+              <h1 class="card-title text-center mb-4 fs-2">Login</h1>
+
+              <form
+                id="validationForm"
+                class="needs-validation"
+                novalidate
+                action="/login"
+                method="post"
+              >
+                <div class="form-group">
+                  <label for="email">Email address</label>
+                  <input
+                    type="email"
+                    name="username"
+                    class="form-control"
+                    id="email"
+                    placeholder="Enter your Gmail"
+                    required
+                  />
+                  <div class="invalid-feedback" id="emailFeedback">
+                    Please provide a valid Gmail address (e.g.,
+                    example@gmail.com).
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="password">Password</label>
+                  <div class="input-group">
+                    <input
+                      type="password"
+                      name="password"
+                      class="form-control"
+                      id="password"
+                      placeholder="Enter your password"
+                      required
+                    />
+                    <div class="input-group-append">
+                      <button
+                        class="btn btn-outline-secondary input-group-text rounded-right"
+                        type="button"
+                        id="togglePassword"
+                      >
+                        <i class="bi bi-eye-slash" id="toggleIcon"></i>
+                      </button>
+                    </div>
+                    <div class="invalid-feedback" id="passwordFeedback">
+                      Password must be at least 8 characters long and include at
+                      least one uppercase letter, one special character, and one
+                      number.
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="captchaInput">Captcha:</label>
+                  <div class="captcha-box">
+                    <span
+                      class="captcha no-select text-muted"
+                      id="captchaValue"
+                    ></span>
+                    <i
+                      class="bi bi-arrow-clockwise captcha-refresh"
+                      id="refreshCaptcha"
+                      title="Refresh Captcha"
+                    ></i>
+                  </div>
+                  <input
+                    type="text"
+                    class="form-control mt-2"
+                    id="captchaInput"
+                    placeholder="Enter the captcha"
+                    required
+                  />
+                  <div class="invalid-feedback" id="captchaFeedback">
+                    Please enter the correct captcha as shown.
+                  </div>
+                </div>
+                <div
+                  class="form-group remember-me d-flex justify-content-center align-items-center"
+                >
+                  <a href="/forgot" class="text-success">Forgot Password?</a>
+                </div>
+                <button
+                  type="submit"
+                  id="submitBtn"
+                  class="btn btn-outline-success btn-block mt-2"
+                  disabled
+                >
+                  Submit
+                </button>
+              </form>
+              <div class="text-center mt-3">
+                <small
+                  >Not a member?
+                  <a href="/register" class="text-success">Sign Up</a></small
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+      // JavaScript for form validation and show/hide password
+      const emailInput = document.getElementById("email");
+      const passwordInput = document.getElementById("password");
+      const captchaInput = document.getElementById("captchaInput");
+      const submitBtn = document.getElementById("submitBtn");
+      const togglePassword = document.getElementById("togglePassword");
+      const toggleIcon = document.getElementById("toggleIcon");
+      const captchaValue = document.getElementById("captchaValue");
+      const refreshCaptcha = document.getElementById("refreshCaptcha");
+
+      // Regex to validate Gmail address
+      const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+
+      // Regex to validate password
+      const passwordRegex =
+        /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
+
+      // Generate a random string for the captcha (includes only letters and numbers)
+      function generateCaptcha() {
+        const characters =
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        let captcha = "";
+        for (let i = 0; i < 6; i++) {
+          captcha += characters.charAt(
+            Math.floor(Math.random() * characters.length)
+          );
+        }
+        return captcha;
+      }
+
+      // Initialize captcha
+      let currentCaptcha = generateCaptcha();
+      captchaValue.textContent = currentCaptcha;
+
+      // Refresh captcha when the user clicks the refresh button
+      refreshCaptcha.addEventListener("click", () => {
+        currentCaptcha = generateCaptcha();
+        captchaValue.textContent = currentCaptcha;
+        captchaInput.value = "";
+        captchaInput.classList.remove("is-valid", "is-invalid");
+        validateForm();
+      });
+
+      // Toggle password visibility
+      togglePassword.addEventListener("click", function () {
+        const type =
+          passwordInput.getAttribute("type") === "password"
+            ? "text"
+            : "password";
+        passwordInput.setAttribute("type", type);
+
+        // Toggle the eye / eye-slash icon
+        toggleIcon.classList.toggle("bi-eye");
+        toggleIcon.classList.toggle("bi-eye-slash");
+      });
+
+      function validateInput(input, regex, feedbackElement) {
+        input.addEventListener("focus", () => {
+          input.addEventListener("input", () => {
+            if (input.value === "") {
+              input.classList.remove("is-valid", "is-invalid");
+              feedbackElement.style.display = "none";
+            } else if (regex.test(input.value)) {
+              input.classList.remove("is-invalid");
+              input.classList.add("is-valid");
+              feedbackElement.style.display = "none";
+            } else {
+              input.classList.remove("is-valid");
+              input.classList.add("is-invalid");
+              feedbackElement.style.display = "block";
+            }
+            validateForm();
+          });
+        });
+      }
+
+      // Validate the captcha input
+      function validateCaptcha() {
+        captchaInput.addEventListener("input", () => {
+          if (captchaInput.value === currentCaptcha) {
+            captchaInput.classList.remove("is-invalid");
+            captchaInput.classList.add("is-valid");
+          } else {
+            captchaInput.classList.remove("is-valid");
+            captchaInput.classList.add("is-invalid");
+          }
+          validateForm();
+        });
+      }
+
+      function validateForm() {
+        const isEmailValid = gmailRegex.test(emailInput.value);
+        const isPasswordValid = passwordRegex.test(passwordInput.value);
+        const isCaptchaCorrect = captchaInput.value === currentCaptcha;
+
+        submitBtn.disabled = !(
+          isEmailValid &&
+          isPasswordValid &&
+          isCaptchaCorrect
+        );
+
+        if (isEmailValid && isPasswordValid && isCaptchaCorrect) {
+          submitBtn.classList.remove("btn-outline-success");
+          submitBtn.classList.add("btn-success");
+        } else {
+          submitBtn.classList.remove("btn-success");
+          submitBtn.classList.add("btn-outline-success");
+        }
+      }
+
+      // Initialize validation for each input separately
+      validateInput(
+        emailInput,
+        gmailRegex,
+        document.getElementById("emailFeedback")
+      );
+      validateInput(
+        passwordInput,
+        passwordRegex,
+        document.getElementById("passwordFeedback")
+      );
+      validateCaptcha();
+
+      document.addEventListener("DOMContentLoaded", function () {
+        var captchaElement = document.getElementById("captchaValue");
+
+        captchaElement.addEventListener("copy", function (e) {
+          e.preventDefault(); // Prevents the copy event
+          alert("Copying is disabled for this content.");
+        });
+      });
+    </script>
+  </body>
 </html>

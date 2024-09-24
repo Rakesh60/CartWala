@@ -1,122 +1,581 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-	th:replace="~{base::layout(~{::body})}">
-<head>
-<meta charset="UTF-8">
-<title>Register</title>
-<!-- Add Bootstrap CSS link if not already included in the base layout -->
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-	<th:block th:if="${session.successMsg}">
-		<div class="alert alert-success alert-dismissible fade show z-3 position-absolute" role="alert">
-			<strong>✔️ [[${session.successMsg}]]</strong>
-			<button type="button" class="btn btn-outline" data-bs-dismiss="alert" aria-label="Close">❌</button>
-		</div>
-		<th th:text="${@commonServiceImpl.removeSessionMessage()}"></th>
-	</th:block>
-	<th:block th:if="${session.errorMsg}">
-		<div class="alert alert-warning alert-dismissible fade show z-3 position-absolute" role="alert">
-			<strong>[[${session.errorMsg}]]</strong>
-			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-		</div>
-		<th th:text="${@commonServiceImpl.removeSessionMessage()}"></th>
-	</th:block>
-	<div class="bg-warning bg-opacity-10 p-3 container-fluid">
-		<div class="container col-12 col-sm-10 col-md-8 col-lg-4 mb-2 card rounded-3">
-			<form action="/saveuser" method="post" enctype="multipart/form-data" class="pb-4">
-				<h2 class="text-center fs-2 p-2">Register here</h2>
-				<!-- Full Name input -->
-				<div data-mdb-input-init class="form-outline mb-4">
-					<input name="name" type="text" id="fullname" class="form-control" />
-					<label class="form-label" for="fullname">Full Name</label>
-				</div>
-				<!-- Address and City inputs -->
-				<div class="row mb-4">
-					<div class="col-12 col-md-6 mb-3 mb-md-0">
-						<div data-mdb-input-init class="form-outline">
-							<input name="address" type="text" id="address" class="form-control" />
-							<label class="form-label" for="address">Address</label>
-						</div>
-					</div>
-					<div class="col-12 col-md-6">
-						<div data-mdb-input-init class="form-outline">
-							<input name="city" type="text" id="form3Example2" class="form-control" />
-							<label class="form-label" for="form3Example2">City</label>
-						</div>
-					</div>
-				</div>
-				<!-- Email and Phone inputs -->
-				<div class="row mb-4">
-					<div class="col-12 col-md-6 mb-3 mb-md-0">
-						<div data-mdb-input-init class="form-outline">
-							<input name="email" type="email" id="email" class="form-control" />
-							<label class="form-label" for="email">Email</label>
-						</div>
-					</div>
-					<div class="col-12 col-md-6">
-						<div data-mdb-input-init class="form-outline">
-							<input name="mobileNumber" type="number" id="phone" class="form-control" />
-							<label class="form-label" for="phone">Phone</label>
-						</div>
-					</div>
-				</div>
-				<!-- State and Pincode inputs -->
-				<div class="row mb-4">
-					<div class="col-12 col-md-6 mb-3 mb-md-0">
-						<div data-mdb-input-init class="form-outline">
-							<input name="state" type="text" id="state" class="form-control" />
-							<label class="form-label" for="state">State</label>
-						</div>
-					</div>
-					<div class="col-12 col-md-6">
-						<div data-mdb-input-init class="form-outline">
-							<input name="pincode" type="number" id="pincode" class="form-control" />
-							<label class="form-label" for="pincode">Pincode</label>
-						</div>
-					</div>
-				</div>
-				<!-- Password and Confirm Password inputs -->
-				<div class="row mb-4">
-					<div class="col-12 col-md-6 mb-3 mb-md-0">
-						<div data-mdb-input-init class="form-outline">
-							<input name="password" type="password" id="password" class="form-control" />
-							<label class="form-label" for="password">Password</label>
-						</div>
-					</div>
-					<div class="col-12 col-md-6">
-						<div data-mdb-input-init class="form-outline">
-							<input type="password" id="confirm-password" class="form-control" />
-							<label class="form-label" for="confirm-password">Confirm Password</label>
-						</div>
-					</div>
-				</div>
-				<!-- File upload -->
-				<div data-mdb-input-init class="mb-4">
-					<label class="form-label" for="customFile">Upload Profile Picture</label>
-					<input name="file" type="file" class="form-control bg-warning bg-opacity-50" id="customFile" />
-				</div>
-				<!-- Role selection -->
-				<div class="mb-4">
-					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" checked="checked" name="role" id="inlineRadio1" value="ROLE_USER" />
-						<label class="form-check-label" for="inlineRadio1">User</label>
-					</div>
-					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="role" id="inlineRadio2" value="ROLE_SELLER" />
-						<label class="form-check-label" for="inlineRadio2">Seller</label>
-					</div>
-				</div>
-				<!-- Submit button -->
-				<button type="submit" class="btn btn-success btn-block mb-4 mt-4">Sign up</button>
-				<div class="text-center">
-					<p>Already a member? <a href="signin" class="text-danger">Login</a></p>
-				</div>
-			</form>
-		</div>
-	</div>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Email and Password Validation Form</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin-top: 20px;
+      }
+      .deneb_footer .widget_wrapper {
+        background-repeat: no-repeat;
+        background-size: cover;
+        padding-top: 200px;
+        padding-bottom: 70px;
+      }
+      @media (max-width: 767px) {
+        .deneb_footer .widget_wrapper .widget {
+          margin-bottom: 40px;
+        }
+      }
+      .deneb_footer .widget_wrapper .widget .widget_title {
+        margin-bottom: 30px;
+      }
+      .deneb_footer .widget_wrapper .widget .widget_title h4 {
+        font-weight: bold;
+      }
+      .deneb_footer .widget_wrapper .widget .widget_title h4:after {
+        content: "";
+        display: block;
+        max-width: 38px;
+        height: 2px;
+        margin-top: 5px;
+      }
+      .deneb_footer .widget_wrapper .widegt_about p {
+        margin-bottom: 20px;
+      }
+      .deneb_footer .widget_wrapper .widegt_about .social li {
+        display: inline-block;
+        margin-right: 10px;
+      }
+      .deneb_footer .widget_wrapper .widegt_about .social li a {
+        display: block;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        border-radius: 50%;
+        background-color: #f9e6d4;
+        color: #fba543;
+        font-size: 14px;
+        -webkit-transition: all all 0.5s ease-out 0s;
+        -moz-transition: all all 0.5s ease-out 0s;
+        -ms-transition: all all 0.5s ease-out 0s;
+        -o-transition: all all 0.5s ease-out 0s;
+        transition: all all 0.5s ease-out 0s;
+      }
+      .deneb_footer .widget_wrapper .widegt_about .social li a:hover,
+      .deneb_footer .widget_wrapper .widegt_about .social li a:focus {
+        background-image: -moz-linear-gradient(0deg, #ffbd27 0%, #feb000 100%);
+        background-image: -webkit-linear-gradient(
+          0deg,
+          #ffbd27 0%,
+          #feb000 100%
+        );
+        background-image: -ms-linear-gradient(0deg, #ffbd27 0%, #feb000 100%);
+        color: #fff;
+        box-shadow: 2.5px 4.33px 15px 0px rgba(254, 176, 0, 0.4);
+      }
 
-	<!-- Add Bootstrap JS link if not already included in the base layout -->
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
-</body>
+      .deneb_footer
+        .widget_wrapper
+        .widget_contact
+        .contact_info
+        .single_info
+        .icon {
+        font-size: 12px;
+        color: #feb000;
+        margin-right: 10px;
+      }
+      .deneb_footer
+        .widget_wrapper
+        .widget_contact
+        .contact_info
+        .single_info
+        .info
+        p
+        a {
+        color: #7a808d;
+      }
+      .deneb_footer
+        .widget_wrapper
+        .widget_contact
+        .contact_info
+        .single_info
+        .info
+        p
+        span {
+        display: block;
+      }
+
+      .deneb_footer .copyright_area {
+        background: #edecf0;
+        padding: 10px 0;
+      }
+      .deneb_footer .copyright_area .copyright_text {
+        text-align: center;
+      }
+      .deneb_footer .copyright_area .copyright_text p {
+        color: #011a3e;
+      }
+      .deneb_footer .copyright_area .copyright_text p span {
+        color: #feb000;
+      }
+      .deneb_cta .cta_wrapper {
+        padding: 45px 50px 42px;
+        max-width: 970px;
+        border-radius: 15px;
+        margin: auto;
+        margin-bottom: -135px;
+        position: relative;
+        background-image: -moz-linear-gradient(0deg, #ffbd27 0%, #feb000 100%);
+        background-image: -webkit-linear-gradient(
+          0deg,
+          #ffbd27 0%,
+          #feb000 100%
+        );
+        background-image: -ms-linear-gradient(0deg, #ffbd27 0%, #feb000 100%);
+        box-shadow: 2.5px 4.33px 15px 0px rgba(254, 176, 0, 0.4);
+        z-index: 1;
+      }
+      .deneb_cta .cta_wrapper:after {
+        content: "";
+        background-position: bottom;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        z-index: -1;
+      }
+      .deneb_cta .cta_wrapper .cta_content h3 {
+        color: #fff;
+        font-weight: bold;
+      }
+      @media (max-width: 767px) {
+        .deneb_cta .cta_wrapper .cta_content h3 {
+          font-size: 24px;
+        }
+      }
+      .deneb_cta .cta_wrapper .cta_content h3:after {
+        content: "";
+        display: block;
+        max-width: 110px;
+        height: 2px;
+        margin-top: 13px;
+        margin-bottom: 24px;
+      }
+      .deneb_cta .cta_wrapper .cta_content p {
+        color: #fff;
+      }
+      .deneb_cta .cta_wrapper .button_box {
+        float: right;
+      }
+      @media only screen and (min-width: 768px) and (max-width: 991px) {
+        .deneb_cta .cta_wrapper .button_box {
+          float: none;
+          text-align: left;
+          margin-top: 30px;
+        }
+      }
+      @media (max-width: 767px) {
+        .deneb_cta .cta_wrapper .button_box {
+          float: none;
+          text-align: center;
+          margin-top: 30px;
+        }
+      }
+      .deneb_cta .cta_wrapper .button_box .deneb_btn {
+        background: #fff;
+        color: #011a3e;
+      }
+      .deneb_cta .cta_wrapper .button_box .deneb_btn:hover,
+      .deneb_cta .cta_wrapper .button_box .deneb_btn:focus {
+        box-shadow: 2.5px 4.33px 15px 0px rgba(0, 0, 0, 0.15);
+      }
+
+      /* footer end */
+      .input-group-text {
+        cursor: pointer;
+        border-radius: 0 10px 10px 0;
+      }
+      .card {
+        padding: 20px;
+        border: none;
+        border-radius: 15px;
+        background: #fff;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        color: rgb(18, 139, 66);
+        min-height: 500px;
+      }
+      .container {
+        max-width: 1200px;
+        margin-top: 40px;
+      }
+      .card-title {
+        font-weight: bold;
+        font-size: 2rem;
+      }
+      .btn-success,
+      .btn-outline-success {
+        border-radius: 20px;
+      }
+      .form-control,
+      .btn {
+        border-radius: 10px;
+      }
+      .form-check-label,
+      .text-success {
+        color: #ffa500 !important;
+      }
+      .form-check-input {
+        accent-color: green;
+      }
+      @media (min-width: 992px) {
+        .card {
+          width: 400px;
+        }
+      }
+      @media (max-width: 991px) {
+        .card {
+          width: 100%;
+          max-width: 500px;
+          margin-top: 20px;
+        }
+      }
+      @media (max-width: 767px) {
+        .card {
+          margin-top: 10px;
+          padding: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <th:block th:if="${session.successMsg}">
+        <div
+          class="alert alert-success alert-dismissible fade show"
+          role="alert"
+        >
+          <strong>✔</strong> [[${session.successMsg}]]
+          <button
+            type="button"
+            class="close"
+            data-dismiss="alert"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <th th:text="${@commonServiceImpl.removeSessionMessage()}"></th>
+      </th:block>
+      <th:block th:if="${session.errorMsg}">
+        <div
+          class="alert alert-warning alert-dismissible fade show"
+          role="alert"
+        >
+          <strong>Oops..!</strong>[[${errorMsg}]]
+          <button
+            type="button"
+            class="close"
+            data-dismiss="alert"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <th th:text="${@commonServiceImpl.removeSessionMessage()}"></th>
+      </th:block>
+    </div>
+    <div
+      class="container d-flex align-items-start justify-content-center min-vh-100"
+    >
+      <div class="row justify-content-center w-100">
+        <div class="col-lg-4 col-md-6 col-sm-8 col-12">
+          <div class="card shadow-lg">
+            <div class="card-body d-flex flex-column justify-content-between">
+              <h4 class="card-title text-center mb-4">Register</h4>
+              <form
+                id="validationForm"
+                class="needs-validation"
+                action="/saveuser"
+                method="post"
+                novalidate
+              >
+                <h4
+                  th:if="${param.logout}"
+                  class="text-center text-primary mb-4"
+                >
+                  [[${param.logout}?'Logged out':'']]
+                </h4>
+                <h4 th:if="${param.error}" class="text-center text-danger mb-4">
+                  [[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]
+                </h4>
+                <!-- Role Radio Buttons -->
+                <div class="form-group">
+                  <label>Role</label>
+                  <div>
+                    <div class="form-check form-check-inline">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="role"
+                        id="ROLE_USER"
+                        value="ROLE_USER"
+                        required
+                        checked
+                      />
+                      <label class="form-check-label" for="ROLE_USER"
+                        >User</label
+                      >
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="role"
+                        id="ROLE_SELLER"
+                        value="ROLE_SELLER"
+                        required
+                      />
+                      <label class="form-check-label" for="ROLE_SELLER"
+                        >Seller</label
+                      >
+                    </div>
+                    <div class="invalid-feedback">Please select your role.</div>
+                  </div>
+                </div>
+
+                <!-- Full Name Field -->
+                <div class="form-group">
+                  <label for="fullname">Full Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="fullname"
+                    name="name"
+                    placeholder="Enter your full name"
+                    required
+                  />
+                  <div class="invalid-feedback" id="nameFeedback">
+                    Full name must only contain letters and spaces, and be
+                    between 2 and 50 characters.
+                  </div>
+                </div>
+
+                <!-- Email Field -->
+                <div class="form-group">
+                  <label for="email">Email address</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your Gmail"
+                    required
+                  />
+                  <div class="invalid-feedback" id="emailFeedback">
+                    Please provide a valid Gmail address (e.g.,
+                    example@gmail.com).
+                  </div>
+                </div>
+
+                <!-- Password Field -->
+                <div class="form-group">
+                  <label for="password">Password</label>
+                  <div class="input-group">
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="password"
+                      name="password"
+                      placeholder="Enter your password"
+                      required
+                    />
+                    <div class="input-group-append">
+                      <button
+                        class="btn btn-outline-secondary input-group-text"
+                        type="button"
+                        id="togglePassword"
+                      >
+                        <i class="bi bi-eye-slash" id="toggleIcon"></i>
+                      </button>
+                    </div>
+                    <div class="invalid-feedback" id="passwordFeedback">
+                      Password must be at least 8 characters long and include at
+                      least one uppercase letter, one special character, and one
+                      number.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button
+                  type="submit"
+                  id="submitBtn"
+                  class="btn btn-outline-success btn-block mt-4"
+                  disabled
+                >
+                  Submit
+                </button>
+              </form>
+
+              <div class="text-center mt-3">
+                <small
+                  >Already a member?
+                  <a href="/signin" class="text-success">Sign In</a></small
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Footer -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
+      integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA="
+      crossorigin="anonymous"
+    />
+    <section class="deneb_cta">
+      <div class="container">
+        <div class="cta_wrapper">
+          <div class="row align-items-center">
+            <div class="col-lg-7">
+              <div class="cta_content">
+                <h3>Have Any Project in Mind ?</h3>
+                <p>
+                  Curabitur libero eros, efficitur sit amet sodales tincidunt,
+                  aliquet et leo sed ut nibh feugiat, auctor enim quis.
+                </p>
+              </div>
+            </div>
+            <div class="col-lg-5">
+              <div class="button_box">
+                <a href="#" class="btn btn-warning">Hire Us</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer class="deneb_footer">
+      <div
+        class="widget_wrapper"
+        style="
+          background-image: url(http://demo.tortoizthemes.com/deneb-html/deneb-ltr/assets/images/footer_bg.png);
+        "
+      ></div>
+      <div class="copyright_area">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="copyright_text">
+                <p>Copyright &copy; 2020 All rights reserved.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+      // JavaScript for form validation and show/hide password
+      const emailInput = document.getElementById("email");
+      const passwordInput = document.getElementById("password");
+      const submitBtn = document.getElementById("submitBtn");
+      const togglePassword = document.getElementById("togglePassword");
+      const toggleIcon = document.getElementById("toggleIcon");
+      const fullnameInput = document.getElementById("fullname");
+
+      // Regex to validate Gmail address
+      const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+
+      // Regex to validate password
+      const passwordRegex =
+        /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
+
+      // Regex to validate full name (letters and spaces only, between 2 and 50 characters)
+      const nameRegex = /^[a-zA-Z\s]{2,50}$/;
+
+      // Toggle password visibility
+      togglePassword.addEventListener("click", function () {
+        const type =
+          passwordInput.getAttribute("type") === "password"
+            ? "text"
+            : "password";
+        passwordInput.setAttribute("type", type);
+
+        // Toggle the eye / eye-slash icon
+        toggleIcon.classList.toggle("bi-eye");
+        toggleIcon.classList.toggle("bi-eye-slash");
+      });
+
+      function validateInput(input, regex, feedbackElement) {
+        input.addEventListener("focus", () => {
+          input.addEventListener("input", () => {
+            if (input.value === "") {
+              input.classList.remove("is-valid", "is-invalid");
+              feedbackElement.style.display = "none";
+            } else if (regex.test(input.value)) {
+              input.classList.remove("is-invalid");
+              input.classList.add("is-valid");
+              feedbackElement.style.display = "none";
+            } else {
+              input.classList.remove("is-valid");
+              input.classList.add("is-invalid");
+              feedbackElement.style.display = "block";
+            }
+            validateForm();
+          });
+        });
+      }
+
+      // Check if the form is valid
+      function validateForm() {
+        const isEmailValid = gmailRegex.test(emailInput.value);
+        const isPasswordValid = passwordRegex.test(passwordInput.value);
+        const isFullnameValid = nameRegex.test(fullnameInput.value.trim());
+
+        submitBtn.disabled = !(
+          isEmailValid &&
+          isPasswordValid &&
+          isFullnameValid
+        );
+
+        if (isEmailValid && isPasswordValid && isFullnameValid) {
+          submitBtn.classList.remove("btn-outline-success");
+          submitBtn.classList.add("btn-success");
+        } else {
+          submitBtn.classList.remove("btn-success");
+          submitBtn.classList.add("btn-outline-success");
+        }
+      }
+
+      // Initialize validation for each input separately
+      validateInput(
+        emailInput,
+        gmailRegex,
+        document.getElementById("emailFeedback")
+      );
+      validateInput(
+        passwordInput,
+        passwordRegex,
+        document.getElementById("passwordFeedback")
+      );
+      validateInput(
+        fullnameInput,
+        nameRegex,
+        document.getElementById("nameFeedback")
+      );
+    </script>
+  </body>
 </html>

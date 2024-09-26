@@ -24,6 +24,14 @@
 
     <!-- Own CSS -->
     <link rel="stylesheet" th:href="@{/css/indexstyle.css}" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+      #map {
+        height: 500px;
+        width: 100%;
+        margin-top: 20px;
+      }
+    </style>
 </head>
 <body>
 
@@ -486,6 +494,15 @@
 			</div>
 		</div>
 	</section>
+	<section>
+		<div class="container mt-4">
+			<h4 class="text-center">Vendor Locations</h4>
+			<div class="container " >
+				<div class="card products-container" id="map" style="border-radius:30px; border: #FFA500 solid 2px;"></div>
+			  </div>
+		  
+		</div>
+	</section>
 
 	<!-- About Section -->
 	<section class="about" id="about">
@@ -655,5 +672,41 @@
 	<!-- Own JS Link -->
 	<script type="text/javascript" th:src="@{js/main.js}"></script>
 	<script type="text/javascript" src="/js/location.js"></script>
+	<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+      // Sample bus stop coordinates
+      const busStops = [
+        { name: "Majestic Bus Stop", latitude: 12.9716, longitude: 77.5946 },
+        { name: "Shivajinagar Bus Stand", latitude: 12.9843, longitude: 77.6052 },
+        { name: "Yeshwanthpur Bus Stop", latitude: 13.0285, longitude: 77.5333 },
+        { name: "KBS Kempegowda Bus Stand", latitude: 12.972442, longitude: 77.580643 },
+        { name: "Hebbal Bus Stop", latitude: 13.0382, longitude: 77.5912 },
+		{ name: "CTR Shri Sagar", latitude: 13.0072, longitude: 77.5670 },
+		{ name: "MTR (Mavalli Tiffin Room)", latitude: 12.953847, longitude: 77.583999 },
+		{ name: "Vidyaarthi Bhavan", latitude: 12.9446, longitude: 77.5665 },
+		{ name: "The Only Place", latitude: 12.967391, longitude: 77.609361 },
+		{ name: "Airlines Hotel", latitude: 12.9712, longitude: 77.6002 },
+		{ name: "Vidyarthi Bhavan", latitude: 12.9447, longitude: 77.5655 },
+		{ name: "Koshy's Restaurant", latitude: 12.9756, longitude: 77.6067 },
+		{ name: "Toit Brewpub", latitude: 12.9790, longitude: 77.6409 },
+		{ name: "Corner House", latitude: 12.9532, longitude: 77.5983 },
+		{ name: "Empire Restaurant", latitude: 12.9711, longitude: 77.6076 }
+      ];
+
+      // Initialize the map and set the view to a central location
+      const map = L.map("map").setView([12.9716, 77.5946], 12);
+
+      // Add OpenStreetMap tile layer to the map
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "© OpenStreetMap contributors",
+      }).addTo(map);
+
+      // Add markers for each bus stop
+      busStops.forEach((stop) => {
+        L.marker([stop.latitude, stop.longitude])
+          .addTo(map)
+          .bindPopup(`<b>${stop.name}</b>`);
+      });
+    </script>
 </body>
 </html>

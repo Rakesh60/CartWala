@@ -53,16 +53,15 @@ public class SellerController {
 
     @Autowired
     private OrderService orderService;
-    
+
     @Autowired
     private CommonUtil commonUtil;
-    
+
     @Autowired
     private UserRepository userRepository;
-    
-    
+
     @Autowired
-	private BCryptPasswordEncoder passwordEncoder;
+    private BCryptPasswordEncoder passwordEncoder;
 
     @ModelAttribute
     public void getUserDetails(Principal p, Model m) {
@@ -72,41 +71,40 @@ public class SellerController {
             m.addAttribute("user", userData);
         }
     }
-    
+
     private UserData getLoggedInUserData(Principal p) {
-		String email = p.getName();
-		UserData userByEmail = userService.getUserByEmail(email);
-		return userByEmail;
-	}
-    
-    
+        String email = p.getName();
+        UserData userByEmail = userService.getUserByEmail(email);
+        return userByEmail;
+    }
+
     @GetMapping("/")
     public String index() {
         return "seller/index";
     }
-    
-	@GetMapping("/getusers")
-	public String getAllUsers(Model m) {
 
-		List<UserData> users = userService.getUsers("ROLE_USER");
-		m.addAttribute("users", users);
+    @GetMapping("/getusers")
+    public String getAllUsers(Model m) {
 
-		return "seller/users";
-	}
+        List<UserData> users = userService.getUsers("ROLE_USER");
+        m.addAttribute("users", users);
+
+        return "seller/users";
+    }
 
     @GetMapping("/category")
     public String category(Model m, Principal principal) {
         // Retrieve the logged-in user's email (assuming email is the username)
         String userEmail = principal.getName();
-        
+
         // Fetch the current user from the database
         UserData currentUser = userService.getUserByEmail(userEmail);
-        
+
         // Fetch only the categories entered by this user
         List<Category> userCategories = categoryService.getCategoriesByUser(currentUser);
-        
+
         m.addAttribute("categories", userCategories);
-        
+
         return "seller/add-category";
     }
 
@@ -160,13 +158,13 @@ public class SellerController {
     public String deleteCategory(@PathVariable int id, HttpSession session, Principal principal) {
         // Retrieve the logged-in user's email
         String userEmail = principal.getName();
-        
+
         // Fetch the current user from the database
         UserData currentUser = userService.getUserByEmail(userEmail);
 
         // Check if the category belongs to the current user before attempting to delete
         Category category = categoryService.getCategoryById(id);
-        
+
         if (category == null) {
             session.setAttribute("errorMsg", "Category not found.");
             return "redirect:/seller/category";
@@ -188,7 +186,6 @@ public class SellerController {
 
         return "redirect:/seller/category";
     }
-
 
     /* Fetch data for Edit Category */
     @GetMapping("/loadeditcategory/{id}")
@@ -261,7 +258,7 @@ public class SellerController {
 
         // Retrieve the logged-in user's email
         String userEmail = principal.getName();
-        
+
         // Fetch the current user from the database
         UserData currentUser = userService.getUserByEmail(userEmail);
 
@@ -312,16 +309,16 @@ public class SellerController {
     public String viewProducts(Model m, Principal principal) {
         // Retrieve the logged-in user's email
         String userEmail = principal.getName();
-        
+
         // Fetch the current user from the database
         UserData currentUser = userService.getUserByEmail(userEmail);
-        
+
         // Fetch only the products added by this user (seller)
         List<Product> userProducts = productService.getProductsByUser(currentUser);
-        
+
         // Add the user's products to the model
         m.addAttribute("products", userProducts);
-        
+
         return "seller/products";
     }
 
@@ -357,13 +354,12 @@ public class SellerController {
             // Update the fields of the old product with the new data
             oldProduct.setTitle(product.getTitle());
             oldProduct.setDescription(product.getDescription());
-           
+
             oldProduct.setPrice(product.getPrice());
             oldProduct.setDiscount(product.getDiscount());
             oldProduct.setStock(product.getStock());
             oldProduct.setIsActive(product.getIsActive());
             oldProduct.setCategory(product.getCategory());
-            
 
             // Update the image name if a new file was uploaded
             if (!file.isEmpty()) {
@@ -403,138 +399,134 @@ public class SellerController {
         return "redirect:/seller/loadeditproduct/" + product.getId();
     }
 
-	/*
-	 * // Order History
-	 * 
-	 * @GetMapping("/orderHistory") public String orderHistory(Model m, Principal
-	 * principal) { String email = principal.getName(); UserData user =
-	 * userService.getUserByEmail(email);
-	 * 
-	 * List<ProductOrder> orderList = orderService.getOrdersBySeller(user);
-	 * m.addAttribute("orders", orderList); m.addAttribute("statuses",
-	 * Arrays.asList(OrderStatus.values()));
-	 * 
-	 * return "seller/order-history"; }
-	 * 
-	 * // Update Order Status
-	 * 
-	 * @GetMapping("/updateOrderStatus/{orderId}/{status}") public String
-	 * updateOrderStatus(@PathVariable Long orderId, @PathVariable int status,
-	 * HttpSession session) { boolean isUpdated =
-	 * orderService.updateOrderStatus(orderId, status);
-	 * 
-	 * if (isUpdated) { session.setAttribute("successMsg",
-	 * "Order status updated successfully"); } else {
-	 * session.setAttribute("errorMsg", "Failed to update order status"); }
-	 * 
-	 * return "redirect:/seller/orderHistory"; }
-	 */
-    
-    
-    
+    /*
+     * // Order History
+     * 
+     * @GetMapping("/orderHistory") public String orderHistory(Model m, Principal
+     * principal) { String email = principal.getName(); UserData user =
+     * userService.getUserByEmail(email);
+     * 
+     * List<ProductOrder> orderList = orderService.getOrdersBySeller(user);
+     * m.addAttribute("orders", orderList); m.addAttribute("statuses",
+     * Arrays.asList(OrderStatus.values()));
+     * 
+     * return "seller/order-history"; }
+     * 
+     * // Update Order Status
+     * 
+     * @GetMapping("/updateOrderStatus/{orderId}/{status}") public String
+     * updateOrderStatus(@PathVariable Long orderId, @PathVariable int status,
+     * HttpSession session) { boolean isUpdated =
+     * orderService.updateOrderStatus(orderId, status);
+     * 
+     * if (isUpdated) { session.setAttribute("successMsg",
+     * "Order status updated successfully"); } else {
+     * session.setAttribute("errorMsg", "Failed to update order status"); }
+     * 
+     * return "redirect:/seller/orderHistory"; }
+     */
+
     @GetMapping("/profile")
-	public String Profile(Model m,Principal p) {
-		
-		return "seller/profile";
-	}
-    
-    
+    public String Profile(Model m, Principal p) {
+
+        return "seller/profile";
+    }
+
     @PostMapping("/update-profile")
-	public String updateUserProfile(@ModelAttribute UserData user, @RequestParam("file") MultipartFile file,
-	                                HttpSession session) throws IOException {
+    public String updateUserProfile(@ModelAttribute UserData user, @RequestParam("file") MultipartFile file,
+            HttpSession session) throws IOException {
 
-	    // Retrieve the old user profile based on the ID
-	    UserData oldUser = userRepository.findById(user.getId()).orElse(null);
+        // Retrieve the old user profile based on the ID
+        UserData oldUser = userRepository.findById(user.getId()).orElse(null);
 
-	    if (oldUser == null) {
-	        session.setAttribute("errorMsg", "User not found.");
-	        return "redirect:/seller/profile";
-	    }
+        if (oldUser == null) {
+            session.setAttribute("errorMsg", "User not found.");
+            return "redirect:/seller/profile";
+        }
 
-	    // Save the old image name before updating
-	    String oldImageName = oldUser.getImagename();
+        // Save the old image name before updating
+        String oldImageName = oldUser.getImagename();
 
-	    // Determine the image name to use (either the old one or the new one if a file was uploaded)
-	    String imageName = file.isEmpty() ? oldImageName : file.getOriginalFilename();
+        // Determine the image name to use (either the old one or the new one if a file
+        // was uploaded)
+        String imageName = file.isEmpty() ? oldImageName : file.getOriginalFilename();
 
-	    // Update the fields of the old user with the new data
-	    oldUser.setName(user.getName());
-	    oldUser.setMobileNumber(user.getMobileNumber());
-	    oldUser.setEmail(user.getEmail());
-	    oldUser.setAddress(user.getAddress());
-	    oldUser.setCity(user.getCity());
-	    oldUser.setState(user.getState());
-	    oldUser.setPincode(user.getPincode());
-	    oldUser.setImagename(imageName);
-	    oldUser.setIsEnabled(true);
+        // Update the fields of the old user with the new data
+        oldUser.setName(user.getName());
+        oldUser.setMobileNumber(user.getMobileNumber());
+        oldUser.setEmail(user.getEmail());
+        oldUser.setAddress(user.getAddress());
+        oldUser.setCity(user.getCity());
+        oldUser.setState(user.getState());
+        oldUser.setPincode(user.getPincode());
+        oldUser.setImagename(imageName);
+        oldUser.setIsEnabled(true);
 
-	    // Save the updated user before handling the image
-	    UserData updatedUser = userRepository.save(oldUser);
+        // Save the updated user before handling the image
+        UserData updatedUser = userRepository.save(oldUser);
 
-	    // If a new file was uploaded, delete the old profile image and save the new one
-	    if (!file.isEmpty()) {
-	        String uploadDir = "uploads/img/profile_img";
-	        File uploadDirectory = new File(uploadDir);
+        // If a new file was uploaded, delete the old profile image and save the new one
+        if (!file.isEmpty()) {
+            String uploadDir = "uploads/img/profile_img";
+            File uploadDirectory = new File(uploadDir);
 
-	        // Create directories if they don't exist
-	        if (!uploadDirectory.exists()) {
-	            boolean dirsCreated = uploadDirectory.mkdirs();
-	            if (!dirsCreated) {
-	                session.setAttribute("errorMsg", "Failed to create upload directory.");
-	                return "redirect:/seller/profile";
-	            }
-	        }
+            // Create directories if they don't exist
+            if (!uploadDirectory.exists()) {
+                boolean dirsCreated = uploadDirectory.mkdirs();
+                if (!dirsCreated) {
+                    session.setAttribute("errorMsg", "Failed to create upload directory.");
+                    return "redirect:/seller/profile";
+                }
+            }
 
-	     // Delete the old profile image if it exists and is not the default image
-	        if (oldImageName != null && !oldImageName.isEmpty() && !"default.jpg".equals(oldImageName)) {
-	            File oldImage = new File(uploadDirectory, oldImageName);
-	            if (oldImage.exists()) {
-	                oldImage.delete();
-	            }
-	        }
+            // Delete the old profile image if it exists and is not the default image
+            if (oldImageName != null && !oldImageName.isEmpty() && !"default.jpg".equals(oldImageName)) {
+                File oldImage = new File(uploadDirectory, oldImageName);
+                if (oldImage.exists()) {
+                    oldImage.delete();
+                }
+            }
 
+            // Save the new image file
+            try {
+                Path filePath = Paths.get(uploadDirectory.getAbsolutePath(), file.getOriginalFilename());
+                Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+                session.setAttribute("successMsg", "Profile updated successfully, and new image saved.");
+            } catch (IOException e) {
+                e.printStackTrace();
+                session.setAttribute("errorMsg", "Failed to save the new image.");
+                return "redirect:/seller/profile";
+            }
+        }
 
-	        // Save the new image file
-	        try {
-	            Path filePath = Paths.get(uploadDirectory.getAbsolutePath(), file.getOriginalFilename());
-	            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-	            session.setAttribute("successMsg", "Profile updated successfully, and new image saved.");
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	            session.setAttribute("errorMsg", "Failed to save the new image.");
-	            return "redirect:/seller/profile";
-	        }
-	    }
+        return "redirect:/seller/profile";
+    }
 
-	    return "redirect:/seller/profile";
-	}
-    
-    
-	//Change Password
-	
-	@PostMapping("/change-password")
-	public String changePassword(@RequestParam String newPassword,@RequestParam String currentPassword,Principal p,HttpSession session) {
-		UserData loggedInUserData = getLoggedInUserData(p);
-		boolean matches = passwordEncoder.matches(currentPassword, loggedInUserData.getPassword());
-		
-		 if (matches) {
-			 String encode = passwordEncoder.encode(newPassword);
-			 loggedInUserData.setPassword(encode);
-			 UserData savedUser = userService.updateUser(loggedInUserData);
-			 if (ObjectUtils.isEmpty(savedUser)) {
-					session.setAttribute("errorMsg","Password not updated");
+    // Change Password
 
-			} else {
-				session.setAttribute("successMsg","Password saved successfullly");
+    @PostMapping("/change-password")
+    public String changePassword(@RequestParam String newPassword, @RequestParam String currentPassword, Principal p,
+            HttpSession session) {
+        UserData loggedInUserData = getLoggedInUserData(p);
+        boolean matches = passwordEncoder.matches(currentPassword, loggedInUserData.getPassword());
 
-			}
-			
-		} else {
-			session.setAttribute("errorMsg",currentPassword+" is Incorrect Password");
-		}
-		
-		return "redirect:/seller/profile";
-	}
+        if (matches) {
+            String encode = passwordEncoder.encode(newPassword);
+            loggedInUserData.setPassword(encode);
+            UserData savedUser = userService.updateUser(loggedInUserData);
+            if (ObjectUtils.isEmpty(savedUser)) {
+                session.setAttribute("errorMsg", "Password not updated");
 
+            } else {
+                session.setAttribute("successMsg", "Password saved successfullly");
+
+            }
+
+        } else {
+            session.setAttribute("errorMsg", currentPassword + " is Incorrect Password");
+        }
+
+        return "redirect:/seller/profile";
+    }
 
 }

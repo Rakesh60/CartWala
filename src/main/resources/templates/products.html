@@ -124,9 +124,11 @@
 
 						<!-- Wrap the categories inside a collapse div -->
 						<div class="collapse d-md-block" id="categoryList">
+							<p  id="location" class="text-primary fs-4">Finding Location...</p>
 							<div class="py-4">
 								<!-- title -->
 								<h5 class="mb-3">Categories</h5>
+								
 								<!-- Sidebar Toggle Button -->
 								<ul class="list-unstyled">
 									<li class="dropdown-item mb-1 "><a
@@ -139,7 +141,7 @@
 										th:classappend="${paramValue == cat.name} ? 'active ' : ''"
 										th:href="@{'/products?category='+${cat.name}}"> <img
 											th:src="@{'/uploads/img/category_img/'+${cat.imagename}}"
-											height="45px" width="45px" alt="" srcset="" />
+											height="45px" width="45px" alt="" srcset="" />&nbsp;
 											[[${cat.name}]]
 
 									</a>
@@ -342,6 +344,7 @@
 
 	<!-- Javascript-->
 	<!-- Own JS Link -->
+	<script type="text/javascript" src="/js/location.js"></script>
 	<script type="text/javascript" th:src="@{js/jquery.min.js}"></script>
 	<script type="text/javascript" th:src="@{js/bootstrap.bundle.min.js}"></script>
 	<script type="text/javascript" th:src="@{js/theme.min.js}"></script>

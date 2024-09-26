@@ -188,6 +188,19 @@ public class HomeController {
 	@GetMapping("/product/{id}")
 	public String product(@PathVariable int id, Model m) {
 		Product productById = productService.getProductById(id);
+		// Retrieve the seller who stored the product
+		UserData storedBy = productById.getStoredBy();
+
+		// Print the storedBy (seller) details to the console
+		if (storedBy != null) {
+			m.addAttribute("seller", storedBy.getName());
+			m.addAttribute("getNumber", storedBy.getMobileNumber());
+			m.addAttribute("pincode", storedBy.getPincode());
+			m.addAttribute("address", storedBy.getAddress());
+
+		} else {
+			System.out.println("No seller information available for this product.");
+		}
 
 		m.addAttribute("product", productById);
 

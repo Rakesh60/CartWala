@@ -674,39 +674,58 @@
 	<script type="text/javascript" src="/js/location.js"></script>
 	<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
-      // Sample bus stop coordinates
-      const busStops = [
-        { name: "Majestic Bus Stop", latitude: 12.9716, longitude: 77.5946 },
-        { name: "Shivajinagar Bus Stand", latitude: 12.9843, longitude: 77.6052 },
-        { name: "Yeshwanthpur Bus Stop", latitude: 13.0285, longitude: 77.5333 },
-        { name: "KBS Kempegowda Bus Stand", latitude: 12.972442, longitude: 77.580643 },
-        { name: "Hebbal Bus Stop", latitude: 13.0382, longitude: 77.5912 },
-		{ name: "CTR Shri Sagar", latitude: 13.0072, longitude: 77.5670 },
-		{ name: "MTR (Mavalli Tiffin Room)", latitude: 12.953847, longitude: 77.583999 },
-		{ name: "Vidyaarthi Bhavan", latitude: 12.9446, longitude: 77.5665 },
-		{ name: "The Only Place", latitude: 12.967391, longitude: 77.609361 },
-		{ name: "Airlines Hotel", latitude: 12.9712, longitude: 77.6002 },
-		{ name: "Vidyarthi Bhavan", latitude: 12.9447, longitude: 77.5655 },
-		{ name: "Koshy's Restaurant", latitude: 12.9756, longitude: 77.6067 },
-		{ name: "Toit Brewpub", latitude: 12.9790, longitude: 77.6409 },
-		{ name: "Corner House", latitude: 12.9532, longitude: 77.5983 },
-		{ name: "Empire Restaurant", latitude: 12.9711, longitude: 77.6076 }
-      ];
+     // Sample bus stop coordinates
+const vendors = [
+  { name: "Rajesh Kumar", latitude: 12.9716, longitude: 77.5946 },
+  { name: "Amit Singh", latitude: 12.9843, longitude: 77.6052 },
+  { name: "Vikram Joshi", latitude: 13.0285, longitude: 77.5333 },
+  { name: "Sunil Rao", latitude: 12.972442, longitude: 77.580643 },
+  { name: "Ravi Patel", latitude: 13.0382, longitude: 77.5912 },
+  { name: "Manoj Desai", latitude: 13.0072, longitude: 77.5670 },
+  { name: "Vikas Sharma", latitude: 12.953847, longitude: 77.583999 },
+  { name: "Sanjay Kapoor", latitude: 12.9446, longitude: 77.5665 },
+  { name: "Rajiv Mehra", latitude: 12.967391, longitude: 77.609361 },
+  { name: "Pavan Iyer", latitude: 12.9712, longitude: 77.6002 },
+  { name: "Kiran Mehta", latitude: 12.9447, longitude: 77.5655 },
+  { name: "Shyam Reddy", latitude: 12.9756, longitude: 77.6067 },
+  { name: "Rohit Gupta", latitude: 12.9790, longitude: 77.6409 },
+  { name: "Arjun Bajaj", latitude: 12.9532, longitude: 77.5983 },
+  { name: "Suresh Nair", latitude: 12.9711, longitude: 77.6076 }
+];
 
-      // Initialize the map and set the view to a central location
-      const map = L.map("map").setView([12.9716, 77.5946], 12);
+// Initialize the map and set the view to a central location
+const map = L.map("map").setView([12.9716, 77.5946], 12);
 
-      // Add OpenStreetMap tile layer to the map
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: "© OpenStreetMap contributors",
-      }).addTo(map);
+// Add OpenStreetMap tile layer to the map
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution: "© OpenStreetMap contributors",
+}).addTo(map);
 
-      // Add markers for each bus stop
-      busStops.forEach((stop) => {
-        L.marker([stop.latitude, stop.longitude])
-          .addTo(map)
-          .bindPopup(`<b>${stop.name}</b>`);
-      });
+// Define a custom icon
+const customIcon = L.icon({
+  iconUrl: 'https://cart-wala.s3.us-south.cloud-object-storage.appdomain.cloud/Cart-wala-logo.png', // URL to your logo image
+  iconSize: [32, 32], // size of the icon
+  iconAnchor: [16, 32], // point of the icon which will correspond to marker's location
+  popupAnchor: [0, -32] // point from which the popup should open relative to the iconAnchor
+});
+
+// Add markers and 1 km radius circles for each bus stop
+vendors.forEach((stop) => {
+  // Add marker with custom icon
+  L.marker([stop.latitude, stop.longitude], { icon: customIcon })
+    .addTo(map)
+    .bindPopup(`<b>${stop.name}</b>`);
+
+  // Add a 1 km radius circle (1000 meters)
+  L.circle([stop.latitude, stop.longitude], {
+    color: '#ffa500',    // Circle border color
+    fillColor: '#28a745',  // Fill color (light blue)
+    fillOpacity: 0.2,  // Opacity of the fill color
+    radius: 1000       // Radius in meters (1 km)
+  }).addTo(map);
+});
+
+	  
     </script>
 </body>
 </html>

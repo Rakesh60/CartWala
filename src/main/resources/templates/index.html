@@ -495,13 +495,21 @@
 		</div>
 	</section>
 	<section>
-		<div class="container mt-4">
-			<h4 class="text-center">Vendor Locations</h4>
+		<div class="container">
+		<div class="heading">
+			<h1 class="p-3 mt-5">
+				Available Vendor's<br /> <span> Location</span>
+			</h1>
+			<!-- <button href="#" class=" button">
+          Shop Now<i class="fa-solid fa-arrow-right"></i>
+        </button> -->
+		</div>
+	</div>
 			<div class="container " >
 				<div class="card products-container" id="map" style="border-radius:30px; border: #FFA500 solid 2px;"></div>
 			  </div>
 		  
-		</div>
+	
 	</section>
 
 	<!-- About Section -->
@@ -703,7 +711,7 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 
 // Define a custom icon
 const customIcon = L.icon({
-  iconUrl: 'https://cart-wala.s3.us-south.cloud-object-storage.appdomain.cloud/Cart-wala-logo.png', // URL to your logo image
+  iconUrl: 'https://cart-wala.s3.us-south.cloud-object-storage.appdomain.cloud/Cartwala-logo.png', // URL to your logo image
   iconSize: [32, 32], // size of the icon
   iconAnchor: [16, 32], // point of the icon which will correspond to marker's location
   popupAnchor: [0, -32] // point from which the popup should open relative to the iconAnchor
@@ -719,7 +727,7 @@ vendors.forEach((stop) => {
   // Add a 1 km radius circle (1000 meters)
   L.circle([stop.latitude, stop.longitude], {
     color: '#ffa500',    // Circle border color
-    fillColor: '#28a745',  // Fill color (light blue)
+    fillColor: 'white',  // Fill color (light blue)
     fillOpacity: 0.2,  // Opacity of the fill color
     radius: 1000       // Radius in meters (1 km)
   }).addTo(map);

@@ -41,6 +41,7 @@
 	<!-- Navbar -->
 	<nav class="navbar navbar-expand-lg fixed-top navbar-custom ">
 		<div class="container-fluid">
+			
 			<a class="navbar-brand ms-5" href="#">Cart Wala</a>
 			<p  id="location" class="text-light">Finding Location...</p>
 			<button class="navbar-toggler" type="button"
@@ -684,25 +685,25 @@
     <script>
      // Sample bus stop coordinates
 const vendors = [
-  { name: "Rajesh Kumar", latitude: 12.9716, longitude: 77.5946 },
-  { name: "Amit Singh", latitude: 12.9843, longitude: 77.6052 },
-  { name: "Vikram Joshi", latitude: 13.0285, longitude: 77.5333 },
-  { name: "Sunil Rao", latitude: 12.972442, longitude: 77.580643 },
-  { name: "Ravi Patel", latitude: 13.0382, longitude: 77.5912 },
-  { name: "Manoj Desai", latitude: 13.0072, longitude: 77.5670 },
-  { name: "Vikas Sharma", latitude: 12.953847, longitude: 77.583999 },
-  { name: "Sanjay Kapoor", latitude: 12.9446, longitude: 77.5665 },
-  { name: "Rajiv Mehra", latitude: 12.967391, longitude: 77.609361 },
-  { name: "Pavan Iyer", latitude: 12.9712, longitude: 77.6002 },
-  { name: "Kiran Mehta", latitude: 12.9447, longitude: 77.5655 },
-  { name: "Shyam Reddy", latitude: 12.9756, longitude: 77.6067 },
-  { name: "Rohit Gupta", latitude: 12.9790, longitude: 77.6409 },
-  { name: "Arjun Bajaj", latitude: 12.9532, longitude: 77.5983 },
-  { name: "Suresh Nair", latitude: 12.9711, longitude: 77.6076 }
+  { name: "Raj Kumar",cartname:"Sabji Wala", latitude: 12.9716, longitude: 77.5946 },
+  { name: "Amit Singh",cartname:"Coconut Cart", latitude: 12.9843, longitude: 77.6052 },
+  { name: "Vikram Joshi",cartname:"Fast Food", latitude: 13.0285, longitude: 77.5333 },
+  { name: "Sunil Rao",cartname:"Milk Shake", latitude: 12.972442, longitude: 77.580643 },
+  { name: "Ravi Patel",cartname:"Amul Cart", latitude: 13.0382, longitude: 77.5912 },
+  { name: "Manoj Desai",cartname:"Momos", latitude: 13.0072, longitude: 77.5670 },
+  { name: "Vikas Sharma",cartname:"Sharma's Kirana", latitude: 12.953847, longitude: 77.583999 },
+  { name: "Sanjay Kapoor",cartname:"Fruit Point", latitude: 12.9446, longitude: 77.5665 },
+  { name: "Rajiv Mehra",cartname:"Sabji Wala", latitude: 12.967391, longitude: 77.609361 },
+  { name: "Pavan Iyer", cartname:"Sabji Wala",latitude: 12.9712, longitude: 77.6002 },
+  { name: "Kiran Mehta",cartname:"Sabji Wala", latitude: 12.9447, longitude: 77.5655 },
+  { name: "Shyam Reddy",cartname:"Shyam falWala", latitude: 12.9756, longitude: 77.6067 },
+  { name: "Rohit Gupta",cartname:"Sabji Wala", latitude: 12.9790, longitude: 77.6409 },
+  { name: "Arjun Bajaj",cartname:"JIUCE Corner", latitude: 12.9532, longitude: 77.5983 },
+  { name: "Suresh Nair",cartname:"Sabji Wala", latitude: 12.9711, longitude: 77.6076 }
 ];
 
 // Initialize the map and set the view to a central location
-const map = L.map("map").setView([12.9716, 77.5946], 12);
+const map = L.map("map").setView([12.9716, 77.5946], 13);
 
 // Add OpenStreetMap tile layer to the map
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -722,7 +723,7 @@ vendors.forEach((stop) => {
   // Add marker with custom icon
   L.marker([stop.latitude, stop.longitude], { icon: customIcon })
     .addTo(map)
-    .bindPopup(`<b>${stop.name}</b>`);
+    .bindPopup(`<b>${stop.name+" "+stop.cartname}</b>`);
 
   // Add a 1 km radius circle (1000 meters)
   L.circle([stop.latitude, stop.longitude], {
